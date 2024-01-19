@@ -23,6 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GameTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Game</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -182,9 +183,28 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\components\Collider.h" />
+    <ClInclude Include="src\components\Component.h" />
+    <ClInclude Include="src\components\Mesh.h" />
+    <ClInclude Include="src\components\Physics.h" />
+    <ClInclude Include="src\components\Player.h" />
+    <ClInclude Include="src\components\Transform.h" />
+    <ClInclude Include="src\rendering\RenderColour.h" />
+    <ClInclude Include="src\rendering\ShapeRenderer.h" />
+    <ClInclude Include="src\levels\Level.h" />
+    <ClInclude Include="src\scenes\MenuScene.h" />
+    <ClInclude Include="src\Globals.h" />
+    <ClInclude Include="src\levels\LevelGenerator.h" />
+    <ClInclude Include="src\scenes\GameplayScene.h" />
+    <ClInclude Include="src\scenes\SceneController.h" />
+    <ClInclude Include="src\scenes\Scene.h" />
+    <ClInclude Include="src\math\MathUtility.h" />
+    <ClInclude Include="src\math\Mathf.h" />
+    <ClInclude Include="src\utility\TypeIDGenerator.h" />
     <ClInclude Include="stb_image\stb_image.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="src\math\Vector3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\app.cpp" />
@@ -192,7 +212,17 @@
     <ClCompile Include="App\SimpleController.cpp" />
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
-    <ClCompile Include="GameTest.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="src\components\Player.cpp" />
+    <ClCompile Include="src\rendering\ShapeRenderer.cpp" />
+    <ClCompile Include="src\levels\Level.cpp" />
+    <ClCompile Include="src\scenes\MenuScene.cpp" />
+    <ClCompile Include="src\levels\LevelGenerator.cpp" />
+    <ClCompile Include="src\scenes\GameplayScene.cpp" />
+    <ClCompile Include="src\scenes\Scene.cpp" />
+    <ClCompile Include="src\scenes\SceneController.cpp" />
+    <ClCompile Include="src\math\MathUtility.cpp" />
+    <ClCompile Include="src\math\Mathf.cpp" />
     <ClCompile Include="stb_image\stb_image.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -200,6 +230,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\math\Vector3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

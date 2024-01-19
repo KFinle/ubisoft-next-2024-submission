@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GameTest.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="App\app.cpp">
       <Filter>API</Filter>
@@ -21,6 +21,17 @@
     <ClCompile Include="stb_image\stb_image.cpp">
       <Filter>stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\Mathf.cpp" />
+    <ClCompile Include="src\math\Vector3.cpp" />
+    <ClCompile Include="src\math\MathUtility.cpp" />
+    <ClCompile Include="src\scenes\SceneController.cpp" />
+    <ClCompile Include="src\scenes\GameplayScene.cpp" />
+    <ClCompile Include="src\levels\LevelGenerator.cpp" />
+    <ClCompile Include="src\scenes\MenuScene.cpp" />
+    <ClCompile Include="src\scenes\Scene.cpp" />
+    <ClCompile Include="src\levels\Level.cpp" />
+    <ClCompile Include="src\rendering\ShapeRenderer.cpp" />
+    <ClCompile Include="src\components\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -48,6 +59,25 @@
     <ClInclude Include="stb_image\stb_image.h">
       <Filter>stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\Mathf.h" />
+    <ClInclude Include="src\math\Vector3.h" />
+    <ClInclude Include="src\math\MathUtility.h" />
+    <ClInclude Include="src\scenes\Scene.h" />
+    <ClInclude Include="src\scenes\SceneController.h" />
+    <ClInclude Include="src\scenes\GameplayScene.h" />
+    <ClInclude Include="src\levels\LevelGenerator.h" />
+    <ClInclude Include="src\Globals.h" />
+    <ClInclude Include="src\scenes\MenuScene.h" />
+    <ClInclude Include="src\levels\Level.h" />
+    <ClInclude Include="src\rendering\ShapeRenderer.h" />
+    <ClInclude Include="src\rendering\RenderColour.h" />
+    <ClInclude Include="src\components\Player.h" />
+    <ClInclude Include="src\components\Component.h" />
+    <ClInclude Include="src\utility\TypeIDGenerator.h" />
+    <ClInclude Include="src\components\Mesh.h" />
+    <ClInclude Include="src\components\Transform.h" />
+    <ClInclude Include="src\components\Collider.h" />
+    <ClInclude Include="src\components\Physics.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="stb_image">
