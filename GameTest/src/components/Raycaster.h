@@ -5,6 +5,10 @@
 #include "../src/math/Vector3.h"
 #include "../App/main.h"
 
+constexpr auto RAY_REFLECTION = true; // false for 3d raycasting, true for line ray bounces
+constexpr auto REFLECTION_LENGTH = 50;
+
+
 struct ray
 {
 	float start_x;
@@ -16,6 +20,7 @@ struct ray
 	float distance;
 	bool goal = false;
 	float correction_factor;
+	float reflection_angle;
 };
 
 
@@ -25,13 +30,15 @@ public:
 	float cell_render_size = static_cast<float>(WINDOW_WIDTH) / 100;
 
 	void RenderRays();
-	void Render3D();
 	std::vector<ray> CalculateRays(const Entity<Player>& playerEntity, Level* level);
+	void Render3D();
 
 
 	std::vector<ray> rays;
-	float fov_degrees = 50.0f;
-	int num_rays = WINDOW_WIDTH;
+	float fov_degrees = 10.0f;
+	//int num_rays = WINDOW_WIDTH;
+	int num_rays = 1;
+
 	int max_distance = 500;			// Maximum allowed distance without collision
 	int max_steps = 1000;			// Maximum number of steps
 };

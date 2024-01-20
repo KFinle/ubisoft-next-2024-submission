@@ -2,8 +2,11 @@
 #include "Physics.h"
 #include "Component.h"
 #include "Transform.h"
+#include "Collider.h"
 #include "Mesh.h"
+#include "Projectile.h"
 #include "../levels/Level.h"
+#include "../pools/Pool.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Transform, Physics, and Input should definitely be decoupled, but    //
@@ -16,12 +19,23 @@
 class Player : public Component<Player>
 {
 public:
-	Player() : Component(Updatable | Renderable) {}
+	Player()
+	{ 
+		InitializePlayer();
+	}
 	Physics physics;
 	Transform transform;
 	Mesh mesh;
+	Collider collider;
+
+
+
+	Pool <Projectile> projectiles = Pool<Projectile>(10);
+
+
 	void Update(float delta_time);
 	void Render();
+	void InitializePlayer();
 	bool using_x = false;
 	bool using_y = false;
 	Level* current_level = nullptr;

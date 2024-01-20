@@ -2,21 +2,26 @@
 #include "Raycaster.h"
 //#include "App/main.h"
 
-
 /**
 * Renders the 2D ray visible on the minimap
 */
 void Raycaster::RenderRays()
 {
-    for (const ray r : rays)
+    for (const auto r : rays)
     {
+        // Draw the original ray
         App::DrawLine(r.start_x, r.start_y, r.end_x, r.end_y, 0.0f, 0.8f, 0.8f);
+
+
     }
 }
+
 
 /**
 * Renders the 3D simulation
 * @param level -- reference to the current level
+* 
+* DON'T CALL THIS FUNCTION IN RAY REFLECTION MODE
 */
 void Raycaster::Render3D()
 {
@@ -65,6 +70,7 @@ void Raycaster::Render3D()
     }
 }
 
+
 /**
 * Casts rays from the player and calculates the distance each ray took to hit an obstacle
 * @param player -- reference to the player
@@ -86,6 +92,8 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
 
     float level_offset_x = MAP_OFFSET_X;
     float level_offset_y = MAP_OFFSET_Y;
+    float reflection_angle = 0;
+
 
 
     for (int i = 0; i < num_rays; ++i)
@@ -114,8 +122,11 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
             {
                 if (level->level_map.at(mp) == 1)
                 {
+
+
                     break;
                 }
+
                 else if (level->level_map.at(mp) == 2)
                 {
                     goal_found = true;
@@ -164,6 +175,7 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
         ray.distance = distance;
         ray.goal = goal_found;
         ray.correction_factor = MathUtility::ModDegrees(player_angle - ray_angle);
+        ray.reflection_angle = reflection_angle;
         calculated_rays.push_back(ray);
     }
     return calculated_rays;

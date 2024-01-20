@@ -1,7 +1,9 @@
 #pragma once
 #include "../math/Vector3.h"
-struct Physics
+#include "Component.h"
+struct Physics : public Component<Physics>
 {
+	void Update(float delta_time) {}
 	Vector3 velocity = Vector3(Vector3::Zero());
 	float current_speed = 0;
 	float turn_speed = 2;

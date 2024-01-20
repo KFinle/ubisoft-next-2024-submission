@@ -33,6 +33,8 @@
     <ClCompile Include="src\rendering\ShapeRenderer.cpp" />
     <ClCompile Include="src\components\Player.cpp" />
     <ClCompile Include="src\components\Raycaster.cpp" />
+    <ClCompile Include="src\components\Collider.cpp" />
+    <ClCompile Include="src\components\Physics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -81,6 +83,8 @@
     <ClInclude Include="src\components\Physics.h" />
     <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\components\Raycaster.h" />
+    <ClInclude Include="src\components\Projectile.h" />
+    <ClInclude Include="src\pools\Pool.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="stb_image">

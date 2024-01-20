@@ -4,20 +4,62 @@
 #include "../components/Component.h"
 #include <vector>
 
+using TypeID = uint64_t;
+using EntityID = TypeID;
 
-using EntityID = uint64_t;
+enum EntityAttribute {
+    NoAttribute = 0,
+    Updatable = 1 << 0,
+    Renderable = 1 << 1,
+    CastsRays = 1 << 2,
+    Collides = 1 << 3,
+    Explodes = 1 << 4,
+    // Add more attributes as needed
+};
+
+
+class BaseEntity 
+{
+
+public:
+    BaseEntity() {}
+    virtual ~BaseEntity() {}
+    virtual void Update(float delta_time) = 0;
+    virtual int GetAttributes() const {
+        return NoAttribute;
+    }
+    bool HasAttribute(EntityAttribute attribute) const {
+        return (GetAttributes() & static_cast<int>(attribute)) != 0;
+    }
+};
+
 
 template <typename... Components>
-class Entity {
+class Entity 
+{
 private:
     std::vector<BaseComponent*> m_components;
     EntityID m_id;
+    int m_attributes;
+
 
 public:
-    Entity() 
+    friend class GameplayScene;
+
+
+    //Entity() 
+    //{
+    //    (AddComponent<Components>(), ...);
+    //    m_id = TypeIDGenerator<Entity>::GenerateNewID<Entity>();
+
+    //}
+
+    Entity(int attributes = NoAttribute) : m_attributes(attributes) 
     {
         (AddComponent<Components>(), ...);
+        m_id = TypeIDGenerator<Entity>::GenerateNewID<Entity>();
     }
+
 
     // Constructor with spawn_position parameter
     Entity(Vector3 spawn_position) : Entity() {
@@ -29,6 +71,17 @@ public:
         for (auto& comp : m_components)
         {
             comp->~BaseComponent();
+        }
+    }
+
+    void Update(float delta_time)
+    {
+        for (auto& component : m_components)
+        {
+            if (component->HasAttribute(Updatable))
+            {
+                component->Update();
+            }
         }
     }
 
@@ -85,4 +138,5 @@ public:
     bool HasComponent() const {
         return GetComponent<T>() != nullptr;
     }
+
 };

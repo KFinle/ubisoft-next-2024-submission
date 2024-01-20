@@ -28,7 +28,7 @@ void LevelGenerator::GenerateMap()
 
 	// ensure there's a spawnpoint for the player
 // for now, we'll start at centre
-	map[MAP_HEIGHT / 2][MAP_WIDTH / 2] = Cell::PLAYER;
+	map[MAP_HEIGHT / 2][1] = Cell::PLAYER;
 
 
 	for (int h = 0; h < MAP_HEIGHT; h++)
@@ -40,7 +40,7 @@ void LevelGenerator::GenerateMap()
 	}
 }
 
-int LevelGenerator::NumberOfNearCells(int x, int y)
+int LevelGenerator::NumberOfNearWalls(int x, int y)
 {
 	int count = 0;
 	for (int h = y - 1; h <= y + 1; h++)
@@ -66,16 +66,16 @@ void LevelGenerator::FixMap()
 	{
 		for (int w = 0; w < MAP_WIDTH; w++)
 		{
-			if (map[h][w] == Cell::WALL && NumberOfNearCells(w, h) >= 5)
+			if (map[h][w] == Cell::WALL && NumberOfNearWalls(w, h) >= 5)
 			{
 				map[h][w] = Cell::EMPTY;
 			}
-			if (map[h][w] == Cell::EMPTY && NumberOfNearCells(w, h) <= 1)
+			if (map[h][w] == Cell::EMPTY && NumberOfNearWalls(w, h) <= 1)
 			{
 				map[h][w] = Cell::WALL;
 			}
 
-			if ( w == 1 || w == 2 || h == 0 || h == MAP_HEIGHT - 1)
+			if ( w == 1 || w == 2 )
 			{
 				map[h][w] = Cell::EMPTY;
 			}
@@ -91,6 +91,7 @@ void LevelGenerator::FixMap()
 			}
 		}
 	}
+
 }
 
 void LevelGenerator::CreateRooms()

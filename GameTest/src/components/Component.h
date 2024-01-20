@@ -4,23 +4,27 @@
 
 using ComponentTypeID = IDType;
 
-enum ComponentAttribute {
-    NoAttribute = 0,
-    Updatable = 1 << 0,
-    Renderable = 1 << 1,
-    CastsRays = 1 << 2
-    // Add more attributes as needed
-};
+//enum ComponentAttribute {
+//    NoAttribute = 0,
+//    Updatable = 1 << 0,
+//    Renderable = 1 << 1,
+//    CastsRays = 1 << 2,
+//    Collides = 1 << 3,
+//    // Add more attributes as needed
+//};
 
 class BaseComponent {
 public:
+
     virtual ~BaseComponent() {}
-    virtual int GetAttributes() const {
-        return NoAttribute;
-    }
-    bool HasAttribute(ComponentAttribute attribute) const {
-        return (GetAttributes() & static_cast<int>(attribute)) != 0;
-    }
+    //virtual int GetAttributes() const {
+    //    return NoAttribute;
+    //}
+    //bool HasAttribute(ComponentAttribute attribute) const {
+    //    return (GetAttributes() & static_cast<int>(attribute)) != 0;
+    //}
+    virtual void Update(float delta_time) = 0;
+
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,15 +43,17 @@ public:
         return m_id;
     }
 
-    int GetAttributes() const override {
-        return attributes;
-    }
+    //int GetAttributes() const override 
+    //{
+    //    return attributes;
+    //}
+
+    void Update(float delta_time) override{}
 
     // Constructor to set attributes on creation
-    Component(int attributes = NoAttribute) : attributes(attributes) {}
+    //Component(int attributes = NoAttribute) : attributes(attributes) {}
 
 private:
-    int attributes;
 };
 
 

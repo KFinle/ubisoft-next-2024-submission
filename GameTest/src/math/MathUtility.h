@@ -12,7 +12,7 @@ public:
 	static float DegreeToRadians(float degrees);
 	static float RadiansToDegrees(float radians);
 	static float NormalizedValue(float value, float min, float max);
-	static float ModRadian(float radians);
+	static float ModRadians(float radians);
 	static float ModDegrees(float degrees);
 	static float FixedAngle(int angle);
 	static float ScaleToNativeHeight(float num);

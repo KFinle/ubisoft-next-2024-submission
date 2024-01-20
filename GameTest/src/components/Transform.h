@@ -1,7 +1,8 @@
 #pragma once
 #include "../math/Vector3.h"
-struct Transform : public BaseComponent
+struct Transform : public Component<Transform>
 {
+
 	Vector3 position = Vector3(Vector3::Zero());
 	Vector3 scale = Vector3(Vector3::Zero());
 	//Vector3 rotation = Vector3(Vector3::Right());

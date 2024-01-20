@@ -184,6 +184,7 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\components\Projectile.h" />
     <ClInclude Include="src\components\Raycaster.h" />
     <ClInclude Include="src\components\Collider.h" />
     <ClInclude Include="src\components\Component.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="src\components\Player.h" />
     <ClInclude Include="src\components\Transform.h" />
     <ClInclude Include="src\entities\Entity.h" />
+    <ClInclude Include="src\pools\Pool.h" />
     <ClInclude Include="src\rendering\RenderColour.h" />
     <ClInclude Include="src\rendering\ShapeRenderer.h" />
     <ClInclude Include="src\levels\Level.h" />
@@ -216,6 +218,8 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="src\components\Collider.cpp" />
+    <ClCompile Include="src\components\Physics.cpp" />
     <ClCompile Include="src\components\Raycaster.cpp" />
     <ClCompile Include="src\components\Player.cpp" />
     <ClCompile Include="src\rendering\ShapeRenderer.cpp" />

@@ -25,7 +25,7 @@ float MathUtility::NormalizedValue(float value, float min, float max)
 	return (value - min) / (max - min);
 }
 
-float MathUtility::ModRadian(float radians)
+float MathUtility::ModRadians(float radians)
 {
 	if (radians < 0) return radians + 2 * PI;
 	if (radians > 2 * PI) return radians - 2 * PI;

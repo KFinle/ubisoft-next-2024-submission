@@ -16,7 +16,7 @@ public:
 	int floor_spawn_rate = 80;
 	int number_of_generations = 5;
 	void GenerateMap();
-	int NumberOfNearCells(int x, int y);
+	int NumberOfNearWalls(int x, int y);
 
 	void FixMap();
 
