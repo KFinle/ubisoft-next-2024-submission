@@ -425,7 +425,7 @@ Vector3 Vector3::ScaledToScreen(const Vector3& a)
 {
 	Vector3 scaled;
 	scaled.SetX(MathUtility::ScaleToVirtualWidth(a.GetX()));
-	scaled.SetY(MathUtility::ScaleToVirtualWidth(a.GetY()));
+	scaled.SetY(MathUtility::ScaleToVirtualHeight(a.GetY()));
 	scaled.SetZ(a.GetZ());
 	return scaled;
 }

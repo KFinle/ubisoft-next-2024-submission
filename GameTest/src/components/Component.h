@@ -8,6 +8,7 @@ enum ComponentAttribute {
     NoAttribute = 0,
     Updatable = 1 << 0,
     Renderable = 1 << 1,
+    CastsRays = 1 << 2
     // Add more attributes as needed
 };
 
@@ -16,6 +17,9 @@ public:
     virtual ~BaseComponent() {}
     virtual int GetAttributes() const {
         return NoAttribute;
+    }
+    bool HasAttribute(ComponentAttribute attribute) const {
+        return (GetAttributes() & static_cast<int>(attribute)) != 0;
     }
 };
 

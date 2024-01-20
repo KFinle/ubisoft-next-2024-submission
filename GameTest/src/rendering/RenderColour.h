@@ -1,4 +1,3 @@
-#include "memory"
 struct render_colour
 {
 	float r, g, b;
@@ -9,3 +8,4 @@ struct render_colour
 		this->b = b;
 	}
 };
+

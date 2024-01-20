@@ -32,6 +32,7 @@
     <ClCompile Include="src\levels\Level.cpp" />
     <ClCompile Include="src\rendering\ShapeRenderer.cpp" />
     <ClCompile Include="src\components\Player.cpp" />
+    <ClCompile Include="src\components\Raycaster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -78,6 +79,8 @@
     <ClInclude Include="src\components\Transform.h" />
     <ClInclude Include="src\components\Collider.h" />
     <ClInclude Include="src\components\Physics.h" />
+    <ClInclude Include="src\entities\Entity.h" />
+    <ClInclude Include="src\components\Raycaster.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="stb_image">

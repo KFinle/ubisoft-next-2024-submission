@@ -75,7 +75,17 @@ void LevelGenerator::FixMap()
 				map[h][w] = Cell::WALL;
 			}
 
-			if (w == 0 || w == MAP_WIDTH - 1 || h == 0 || h == MAP_HEIGHT - 1)
+			if ( w == 1 || w == 2 || h == 0 || h == MAP_HEIGHT - 1)
+			{
+				map[h][w] = Cell::EMPTY;
+			}
+
+			if (w == MAP_WIDTH - 1)
+			{
+				map[h][w] = Cell::ENEMYNEXUS;
+			}
+
+			if ( w == 0 || h == 0 || h == MAP_HEIGHT - 1)
 			{
 				map[h][w] = Cell::WALL;
 			}

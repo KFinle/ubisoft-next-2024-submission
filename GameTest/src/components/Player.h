@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Mesh.h"
+#include "../levels/Level.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Transform, Physics, and Input should definitely be decoupled, but    //
@@ -23,6 +24,7 @@ public:
 	void Render();
 	bool using_x = false;
 	bool using_y = false;
+	Level* current_level = nullptr;
 
 	// we'll use these to customize pivoting if needed
 	float last_x = 0;

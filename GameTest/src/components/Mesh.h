@@ -1,6 +1,6 @@
 #pragma once
 #include "vector"
-#include "../math/Triangle.h"
+//#include "../math/Triangle.h"
 #include "../math/Vector3.h"
 class Mesh
 {

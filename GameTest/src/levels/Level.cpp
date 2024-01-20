@@ -33,6 +33,8 @@ void Level::BuildMap()
 		for (x = 0; x < MAP_WIDTH; x++)
 		{
 
+			//x_offset = x * MAP_CELL_SIZE + MAP_OFFSET_X;
+			//y_offset = y * MAP_CELL_SIZE + MAP_OFFSET_Y;
 			x_offset = x * MAP_CELL_SIZE;
 			y_offset = y * MAP_CELL_SIZE;
 			int mappos = y * MAP_WIDTH + x;
@@ -49,7 +51,14 @@ void Level::BuildMap()
 					win_square = (y * MAP_WIDTH + x);
 					m_colour.Set(0.5, 0.1, 1);
 				}
-				else m_colour.Set(0.1, 0.1, 0.1);
+				else if (level_map.at(mappos) == 4)
+				{
+					win_square = (y * MAP_WIDTH + x);
+					m_colour.Set(1, 0, 1);
+				}
+				//else m_colour.Set(0.1, 0.1, 0.1);
+				else m_colour.Set(0, 0, 0);
+
 
 				// only need to assess this on first pass
 				if (player_spawn == 0)
@@ -62,12 +71,11 @@ void Level::BuildMap()
 			}
 
 
-			//ShapeRenderer::RenderSquare(x_offset + 1, y_offset, x_offset + MAP_CELL_SIZE - 1, y_offset + MAP_CELL_SIZE - 1, m_colour.r, m_colour.g, m_colour.b);
-			ShapeRenderer::RenderShapeWithNPolygons(x_offset + MAP_CELL_SIZE * 4, y_offset + MAP_CELL_SIZE / 2, MAP_CELL_SIZE / 2, m_colour.r, m_colour.g, m_colour.b, 4);
+			ShapeRenderer::RenderSquare(x_offset + 1, y_offset, x_offset + MAP_CELL_SIZE - 1, y_offset + MAP_CELL_SIZE - 1, m_colour.r, m_colour.g, m_colour.b);
+			//ShapeRenderer::RenderShapeWithNPolygons(x_offset + MAP_CELL_SIZE * 4, y_offset + MAP_CELL_SIZE / 2, MAP_CELL_SIZE / 2, m_colour.r, m_colour.g, m_colour.b, 4);
 
 		}
 	}
-	//level_map = default_map;
 }
 
 void Level::DrawMapBig(Vector3 player_cell)

@@ -120,6 +120,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -183,12 +184,14 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\components\Raycaster.h" />
     <ClInclude Include="src\components\Collider.h" />
     <ClInclude Include="src\components\Component.h" />
     <ClInclude Include="src\components\Mesh.h" />
     <ClInclude Include="src\components\Physics.h" />
     <ClInclude Include="src\components\Player.h" />
     <ClInclude Include="src\components\Transform.h" />
+    <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\rendering\RenderColour.h" />
     <ClInclude Include="src\rendering\ShapeRenderer.h" />
     <ClInclude Include="src\levels\Level.h" />
@@ -213,6 +216,7 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="src\components\Raycaster.cpp" />
     <ClCompile Include="src\components\Player.cpp" />
     <ClCompile Include="src\rendering\ShapeRenderer.cpp" />
     <ClCompile Include="src\levels\Level.cpp" />

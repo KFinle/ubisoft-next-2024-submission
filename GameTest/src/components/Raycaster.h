@@ -1,0 +1,38 @@
+#pragma once
+#include "../entities/Entity.h"
+#include "../components/Player.h"
+#include "../src/levels/Level.h"
+#include "../src/math/Vector3.h"
+#include "../App/main.h"
+
+struct ray
+{
+	float start_x;
+	float start_y;
+	float end_x;
+	float end_y;
+	float angle;
+	float player_angle;
+	float distance;
+	bool goal = false;
+	float correction_factor;
+};
+
+
+class Raycaster
+{
+public:
+	float cell_render_size = static_cast<float>(WINDOW_WIDTH) / 100;
+
+	void RenderRays();
+	void Render3D();
+	std::vector<ray> CalculateRays(const Entity<Player>& playerEntity, Level* level);
+
+
+	std::vector<ray> rays;
+	float fov_degrees = 50.0f;
+	int num_rays = WINDOW_WIDTH;
+	int max_distance = 500;			// Maximum allowed distance without collision
+	int max_steps = 1000;			// Maximum number of steps
+};
+
