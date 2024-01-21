@@ -8,9 +8,28 @@
 
 void Player::Update(float delta_time)
 {
+	//if (bomb_active && active_bomb->exploded)
+	//{
+	//	bullets_on_screen--;
+	//	bombs->ReturnPoolObject(active_bomb);
+	//	delete active_bomb;
+	//	active_bomb = nullptr;
+	//}
 	for (int i = 0; i < active_projectiles.size(); i++)
 	{
-		if (active_projectiles[i]->lifetime < 0)
+		if (dynamic_cast<Bomb*>(active_projectiles[i]))
+		{
+			if (bomb_active && static_cast<Bomb*>(active_projectiles[i])->lifetime <= 0)
+			{
+				bullets_on_screen--;
+				bombs->ReturnPoolObject(active_bomb);
+				//delete active_bomb;
+				active_bomb = nullptr;
+				//delete active_projectiles[i];
+				active_projectiles.erase(active_projectiles.begin() + i);
+			}
+		}
+		else if (active_projectiles[i]->lifetime < 0)
 		{
 			bullets_on_screen--;
 			bullets->ReturnPoolObject(active_projectiles[i]);
@@ -40,18 +59,36 @@ void Player::Update(float delta_time)
 	if (App::IsKeyPressed(0x32)) selected_weapon = bomb;
 
 
-	if (App::IsKeyPressed(VK_SPACE) && selected_weapon == projectile_type::basic && refire_timer <= 0)
+	if (App::IsKeyPressed(VK_SPACE))
 	{
-		bullets_on_screen++;
-		Bullet* new_projectile = bullets->GetPoolObject();
-		active_projectiles.push_back(new_projectile);
-		new_projectile->Launch(transform);
-		refire_timer = max_refire_timer;
+		if (selected_weapon == projectile_type::basic && refire_timer <= 0)
+		{
+
+			bullets_on_screen++;
+			Bullet* new_projectile = bullets->GetPoolObject();
+			active_projectiles.push_back(new_projectile);
+			new_projectile->Launch(transform);
+			refire_timer = max_refire_timer;
+		}
+		if (selected_weapon == projectile_type::bomb && !active_bomb)
+		{
+
+			bullets_on_screen++;
+			bomb_active = true;
+			Bomb* new_bomb = bombs->GetPoolObject();
+			new_bomb->SetLevelCallback([&]() -> Level* {return current_level; });
+			active_bomb = new_bomb;
+			active_bomb->type = projectile_type::bomb;
+
+			active_projectiles.push_back(new_bomb);
+			new_bomb->Launch(transform);
+		}
+
 	}
 
-	if (App::IsKeyPressed(VK_SPACE) && selected_weapon == projectile_type::bomb)
+	if (App::IsKeyPressed(VK_SHIFT))
 	{
-		if (bomb_active)
+		if (bomb_active && active_bomb != nullptr)
 		{
 			if (!active_bomb->bursting)
 			{
@@ -59,14 +96,7 @@ void Player::Update(float delta_time)
 			}
 		}
 
-		else
-		{
-			active_bomb = bombs->GetPoolObject();
-			active_bomb->launch_speed = 0.2;
-			active_bomb->type = projectile_type::bomb;
-			active_bomb->Launch(transform);
 
-		}
 	}
 
 	if (using_y)
@@ -140,22 +170,30 @@ void Player::Update(float delta_time)
 	if (transform.position.GetY() > 1)	transform.position.SetY(1);
 
 
-	//if (active_projectile != nullptr) active_projectile->Update(delta_time);
 	for (auto& projectile : active_projectiles)
 	{
-		projectile->Update(delta_time);
+		if (dynamic_cast<Bomb*>(projectile))
+		{
+			static_cast<Bomb*>(projectile)->Update(delta_time);
+		}
+		else projectile->Update(delta_time);
 	}
+	//if (active_bomb != nullptr) active_bomb->Update(delta_time);
 
 	refire_timer -= delta_time;
 }
 
 void Player::Render()
 {
-	//if (active_projectile != nullptr) active_projectile->Render();
+	//if (active_bomb != nullptr) active_bomb->Render();
 
 	for (auto& projectile : active_projectiles)
 	{
-		projectile->Render();
+		if (dynamic_cast<Bomb*>(projectile))
+		{
+			static_cast<Bomb*>(projectile)->Render();
+		}
+		else projectile->Render();
 	}
 
 	// turret post 

@@ -59,3 +59,9 @@ float MathUtility::ScaleToVirtualWidth(float num)
 	return ((num + 1.0f) * WINDOW_WIDTH) / 2.0f;
 
 }
+
+Vector3 MathUtility::GetCell(Vector3 position)
+{
+	Vector3 pos = Vector3((int)position.GetX() / MAP_CELL_SIZE, (int)position.GetY() / MAP_CELL_SIZE, 0);
+	return pos;
+}

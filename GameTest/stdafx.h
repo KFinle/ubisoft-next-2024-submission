@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 // TODO: reference additional headers your program requires here
-//#include "./src/Globals.h"
+#include "./src/Globals.h"
 #include "./src/math/MathUtility.h"
 
 

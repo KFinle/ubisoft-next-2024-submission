@@ -19,7 +19,8 @@ struct Collider : public Component<Collider>
 	}
 	void Update(float delta_time)
 	{
-		// look for other colliders 
+		// look for other colliders
+		// probably using the callback setup used on the Projectile class
 	}
 	float width = 10;
 	float height = 10;

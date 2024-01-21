@@ -36,7 +36,7 @@ public:
 	Pool<Bomb>* bombs = Pool<Bomb>::GetInstance(3);
 	int bullets_on_screen = 0;
 	std::vector<Bullet*> active_projectiles;
-	Bomb* active_bomb;
+	Bomb* active_bomb = nullptr;
 
 	void Update(float delta_time);
 	void Render();

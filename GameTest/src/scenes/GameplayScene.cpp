@@ -89,8 +89,8 @@ void GameplayScene::Update(float delta_time)
 				   player->GetComponent<Player>()->collider.CheckWallCollision(x, y, *level) == Cell::BORDER ? true :
 				   false;
 		};
-		proj->SetCollisionCallback(collision_lambda);
-		
+		if (dynamic_cast<Bomb*>(proj)) static_cast<Bomb*>(proj)->SetCollisionCallback(collision_lambda);
+		else proj->SetCollisionCallback(collision_lambda);
 	}
 
 }

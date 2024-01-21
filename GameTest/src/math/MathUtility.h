@@ -18,4 +18,5 @@ public:
 	static float ScaleToNativeWidth(float num);
 	static float ScaleToVirtualHeight(float num);
 	static float ScaleToVirtualWidth(float num);
+	static Vector3 GetCell(Vector3 position);
 };
