@@ -46,14 +46,6 @@ private:
 public:
     friend class GameplayScene;
 
-
-    //Entity() 
-    //{
-    //    (AddComponent<Components>(), ...);
-    //    m_id = TypeIDGenerator<Entity>::GenerateNewID<Entity>();
-
-    //}
-
     Entity(int attributes = NoAttribute) : m_attributes(attributes) 
     {
         (AddComponent<Components>(), ...);

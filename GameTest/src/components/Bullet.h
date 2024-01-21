@@ -92,7 +92,7 @@ struct Bullet : public Component<Bullet>
 	bool launched = false;
 	float launch_speed = 1;
 	projectile_type type = basic;
-	float size = 15;
+	float size = 10;
 	float delta_y;
 	float delta_x;
 	float next_x;

@@ -59,8 +59,8 @@ private:
 
 static int _WINDOW_WIDTH				= WINDOW_WIDTH;
 static int _WINDOW_HEIGHT				= WINDOW_HEIGHT;
-static int MAP_HEIGHT					= 10;
-static int MAP_WIDTH					= 13;
+static int MAP_HEIGHT					= 14;
+static int MAP_WIDTH					= 17;
 static int MAP_SIZE						= MAP_HEIGHT * MAP_WIDTH;
 static int MAP_CELL_SIZE				= _WINDOW_HEIGHT / MAP_HEIGHT;
 static int MAP_OFFSET_X					= MAP_CELL_SIZE * 3;

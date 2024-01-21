@@ -70,7 +70,7 @@ void Player::Update(float delta_time)
 			new_projectile->Launch(transform);
 			refire_timer = max_refire_timer;
 		}
-		if (selected_weapon == projectile_type::bomb && !active_bomb)
+		if (selected_weapon == projectile_type::bomb && !active_bomb && bombs_remaining > 0)
 		{
 
 			bullets_on_screen++;
@@ -82,6 +82,7 @@ void Player::Update(float delta_time)
 
 			active_projectiles.push_back(new_bomb);
 			new_bomb->Launch(transform);
+			bombs_remaining--;
 		}
 
 	}
@@ -140,34 +141,19 @@ void Player::Update(float delta_time)
 	if (physics.velocity.GetX() < -physics.max_speed) physics.velocity.SetX(-physics.max_speed);
 	if (physics.velocity.GetY() < -physics.max_speed) physics.velocity.SetY(-physics.max_speed);
 
-	//int next_x = (transform.position.GetX() + physics.velocity.GetX());
-	//int next_y = (transform.position.GetY() + physics.velocity.GetY());
+	// Apply velocity
+	transform.position.SetY(transform.position.GetY() + physics.velocity.GetY()); 
 
-	float temp_x = MathUtility::ScaleToVirtualWidth(transform.position.GetX()) + transform.position.GetX() + physics.velocity.GetX();
-	float temp_y = MathUtility::ScaleToVirtualHeight(transform.position.GetY()) + transform.position.GetY() + physics.velocity.GetY();
-
-	// player won't be moving horizontally but they might later 
-	if (collider.CheckWallCollision(temp_x, MathUtility::ScaleToVirtualHeight(transform.position.GetY()), *current_level) != Cell::WALL)
+	// Add real collision here if I have time 
+	if (MathUtility::ScaleToVirtualHeight(transform.position.GetY()) < MAP_CELL_SIZE + 20)
 	{
-		transform.position.SetX(transform.position.GetX() + physics.velocity.GetX());
+		transform.position.SetY(MathUtility::ScaleToNativeHeight(MAP_CELL_SIZE + 20));
 	}
-	else transform.position.SetX(transform.position.GetX() - physics.velocity.GetX()*2);
-
-
-	if (collider.CheckWallCollision(MathUtility::ScaleToVirtualWidth(transform.position.GetX()), temp_y, *current_level) != Cell::WALL)
+	if (MathUtility::ScaleToVirtualHeight(transform.position.GetY()) > WINDOW_HEIGHT - MAP_CELL_SIZE - 20)
 	{
-		transform.position.SetY(transform.position.GetY() + physics.velocity.GetY());
+		transform.position.SetY(MathUtility::ScaleToNativeHeight(WINDOW_HEIGHT - MAP_CELL_SIZE - 20 ));
 	}
-	else transform.position.SetY(transform.position.GetY() - physics.velocity.GetY()*2);
 
-
-
-
-	// prevent player moving out of bounds (likely not needed for this game, but it's nice to have safety)
-	if (transform.position.GetX() < -1) transform.position.SetX(-1);
-	if (transform.position.GetX() > 1) transform.position.SetX(1);
-	if (transform.position.GetY() < -1) transform.position.SetY(-1);
-	if (transform.position.GetY() > 1)	transform.position.SetY(1);
 
 
 	for (auto& projectile : active_projectiles)
@@ -185,8 +171,6 @@ void Player::Update(float delta_time)
 
 void Player::Render()
 {
-	//if (active_bomb != nullptr) active_bomb->Render();
-
 	for (auto& projectile : active_projectiles)
 	{
 		if (dynamic_cast<Bomb*>(projectile))
@@ -230,8 +214,18 @@ void Player::Render()
 		MathUtility::DegreeToRadians(MathUtility::ModDegrees(transform.direction_angle))
 	);
 
-	weapon_text = selected_weapon == basic ? "Bullets" : " Bomb";
-	App::Print(MAP_CELL_SIZE, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2, weapon_text.append(" active on screen: ").append(std::to_string(bullets_on_screen)).c_str());
+
+	// Decouple into UI rendering if I have time 
+	std::string weapon_text = selected_weapon == bomb ? "Bombs" : "Bullets";
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2, std::string(" -------- ").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 20, std::string("- Bombs -").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 40, std::string(" --- ").append(std::to_string(bombs_remaining)).append(" --- ").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 60, std::string(" -------- ").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 200, std::string(" -------- ").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 220, std::string("- Weapon-").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 240, std::string(" - ").append(weapon_text).append(" - ").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 260, std::string(" -------- ").c_str());
+
 }
 
 void Player::InitializePlayer()

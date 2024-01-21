@@ -17,7 +17,6 @@ class LevelGenerator
 
 public:
 	std::vector<std::vector<int>> map;
-	//int map[MAP_HEIGHT][MAP_WIDTH];
 
 	int floor_spawn_rate = 50;
 	int breakable_spawn_rate = 90;

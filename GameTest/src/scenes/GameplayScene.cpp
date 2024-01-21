@@ -23,6 +23,9 @@ void GameplayScene::OnLoad()
 	{
 		player->GetComponent<Player>()->active_projectiles.clear();
 		player->GetComponent<Player>()->bullets_on_screen = 0;
+		player->GetComponent<Player>()->active_bomb = nullptr;
+		player->GetComponent<Player>()->bombs_remaining = player->GetComponent<Player>()->max_bombs;
+
 	}
 	level = new Level();
 	level->level_map = level->RandomizeLevel();

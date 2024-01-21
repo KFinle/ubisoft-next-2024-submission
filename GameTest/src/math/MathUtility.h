@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3.h"
 #include <cmath>
+#include <random>
 
 //////////////////////////////////////////////////////////////////////////
 // Several utility math functions that warranted a different class than	//
@@ -19,4 +20,6 @@ public:
 	static float ScaleToVirtualHeight(float num);
 	static float ScaleToVirtualWidth(float num);
 	static Vector3 GetCell(Vector3 position);
+	static float RandomFloat(float min, float max);
+
 };

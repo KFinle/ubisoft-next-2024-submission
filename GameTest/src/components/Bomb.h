@@ -19,7 +19,7 @@ struct Bomb : public Bullet
 		{
 			Explode(delta_time);
 		}
-		if (active)
+		if (active &&   !exploded)
 		{
 			// Update position based on speed and direction
 			float new_x = transform.position.GetX() + delta_x * physics.current_speed * delta_time;
@@ -53,6 +53,10 @@ struct Bomb : public Bullet
 
 	void Render()
 	{
+		for (auto& particle : active_particles)
+		{
+			particle->Render();
+		}
 		if (active) ShapeRenderer::RenderShapeWithNSides
 		(
 			MathUtility::ScaleToVirtualWidth(transform.position.GetX()),
@@ -62,6 +66,8 @@ struct Bomb : public Bullet
 			6
 		);
 		App::Print(100, 500, current_coordinates.ToString().c_str());
+		App::Print(350, 500, std::to_string(active_particles.size()).c_str());
+
 	}
 
 	void Launch(const Transform& launch_point)
@@ -90,6 +96,19 @@ struct Bomb : public Bullet
 
 	void Explode(float delta_time)
 	{
+		for (int i = 0; i < active_particles.size(); i++)
+		{
+			if (active_particles[i]->lifetime <= 0)
+			{
+				particles->ReturnPoolObject(active_particles[i]);
+				active_particles.erase(active_particles.begin() + i);
+			}
+			else
+			{
+				active_particles[i]->Update(delta_time);
+			}
+		}
+
 		bomb_timer -= delta_time;
 		if (bomb_timer <= 0)
 		{
@@ -117,7 +136,13 @@ struct Bomb : public Bullet
 			}
 
 
+
+
 			// start particles, blow up walls
+			Particle* new_particle = particles->GetPoolObject();
+			new_particle->Set(transform);
+			active_particles.push_back(new_particle);
+			
 
 			//if no particles remain
 			lifetime -= delta_time;
@@ -181,6 +206,7 @@ struct Bomb : public Bullet
 
 	// bomb stuff
 	Pool<Particle>* particles = Pool<Particle>::GetInstance(50);
+	std::vector<Particle*> active_particles;
 	bool bursting = false;
 	bool exploded = false;
 	float bomb_timer = 1;

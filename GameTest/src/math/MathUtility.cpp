@@ -65,3 +65,11 @@ Vector3 MathUtility::GetCell(Vector3 position)
 	Vector3 pos = Vector3((int)position.GetX() / MAP_CELL_SIZE, (int)position.GetY() / MAP_CELL_SIZE, 0);
 	return pos;
 }
+
+float MathUtility::RandomFloat(float min, float max)
+{
+	std::random_device device;
+	std::mt19937 generator(device());
+	std::uniform_real_distribution<float> random(min, max);
+	return random(generator);
+}
