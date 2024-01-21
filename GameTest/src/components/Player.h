@@ -3,8 +3,8 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Collider.h"
-#include "Mesh.h"
-#include "Projectile.h"
+#include "Bomb.h"
+#include "Bullet.h"
 #include "../levels/Level.h"
 #include "../pools/Pool.h"
 #include "unordered_map"
@@ -26,23 +26,28 @@ public:
 	}
 	Physics physics;
 	Transform transform;
-	Mesh mesh;
 	Collider collider;
 
 
 
-	Pool<Projectile>* projectiles = Pool<Projectile>::GetInstance(100);
-	std::vector<Projectile*> active_projectiles;
+	projectile_type selected_weapon = projectile_type::basic;
+	std::string weapon_text = "";
+	Pool<Bullet>* bullets = Pool<Bullet>::GetInstance(1000);
+	Pool<Bomb>* bombs = Pool<Bomb>::GetInstance(3);
+	int bullets_on_screen = 0;
+	std::vector<Bullet*> active_projectiles;
+	Bomb* active_bomb;
 
 	void Update(float delta_time);
 	void Render();
 	void InitializePlayer();
 	bool using_x = false;
 	bool using_y = false;
+	bool bomb_active = false;
 	Level* current_level = nullptr;
 
 	float refire_timer = 0;
-	float max_refire_timer = 0.001;
+	float max_refire_timer = 0.1;
 
 	// we'll use these to customize pivoting if needed
 	float last_x = 0;

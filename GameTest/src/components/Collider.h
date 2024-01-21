@@ -10,7 +10,7 @@ struct Collider : public Component<Collider>
 	Vector3 GetPosition();
 	void DrawColliderLines();
 	bool CheckCollision(const Collider& other) const;
-	static bool CheckWallCollision(int direction_x, int direction_y, Level& level);
+	static Cell CheckWallCollision(int direction_x, int direction_y, Level& level);
 	void InitializeCollider(Vector3 position, float width, float height)
 	{
 		this->position = position;

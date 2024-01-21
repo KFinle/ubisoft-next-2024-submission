@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../Globals.h"
 enum scene_type
 {
 	menu, gameplay, gameover

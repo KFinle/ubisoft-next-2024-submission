@@ -14,7 +14,6 @@ public:
 	static float NormalizedValue(float value, float min, float max);
 	static float ModRadians(float radians);
 	static float ModDegrees(float degrees);
-	static float FixedAngle(int angle);
 	static float ScaleToNativeHeight(float num);
 	static float ScaleToNativeWidth(float num);
 	static float ScaleToVirtualHeight(float num);

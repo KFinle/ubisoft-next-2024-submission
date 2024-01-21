@@ -46,5 +46,9 @@ public:
 
 	void DrawMapSmall();
 	void RenderMap();
+
+	bool goal_found = false;
+	bool death_found = false;
+	int breakable_found = 0;
 	render_colour m_colour;
 };

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Raycaster.h"
+#include "../rendering/ShapeRenderer.h"
 //#include "App/main.h"
 
 /**
@@ -10,7 +11,9 @@ void Raycaster::RenderRays()
     for (const auto r : rays)
     {
         // Draw the original ray
-        App::DrawLine(r.start_x, r.start_y, r.end_x, r.end_y, 0.0f, 0.8f, 0.8f);
+        App::DrawLine(r.start_x, r.start_y, r.end_x, r.end_y, 0.0f, 0.3f, 0.3f);
+        float marksize = 3;
+        ShapeRenderer::RenderSquare(r.end_x - marksize / 2, r.end_y - marksize / 2, r.end_x + marksize / 2, r.end_y + marksize / 2, 1, 0, 1);
     }
 }
 
@@ -18,8 +21,6 @@ void Raycaster::RenderRays()
 /**
 * Renders the 3D simulation
 * @param level -- reference to the current level
-* 
-* DON'T CALL THIS FUNCTION IN RAY REFLECTION MODE
 */
 void Raycaster::Render3D()
 {
@@ -41,7 +42,7 @@ void Raycaster::Render3D()
             }
 
             // Calculate illumination based on distance
-            float illumination = 0.5f - (rays[i].distance / max_distance / 5);
+            float illumination = 0.5f - (rays[i].distance / max_distance);
 
             float lineOff = (WINDOW_HEIGHT - wall_height) / 2;
 
@@ -51,13 +52,11 @@ void Raycaster::Render3D()
             float endY = lineOff + wall_height;
 
             //Draw floor
-            App::DrawLine(startX, startY, endX, 0, 0, .3 * illumination, .3 * illumination);
-
-
+            //App::DrawLine(startX, startY, endX, 0, 0, .3 * illumination, .3 * illumination);
 
             if (rays[i].goal)
             {
-                App::DrawLine(startX, startY, endX, endY, 1 * illumination, 1 * illumination, 0* illumination);
+                App::DrawLine(startX, startY, endX, endY, 0 * illumination, 1 * illumination, 0* illumination);
             }
             else if (rays[i].hazard)
             {
@@ -72,7 +71,7 @@ void Raycaster::Render3D()
 				App::DrawLine(startX, startY, endX, endY, 0, 0.8f * illumination, 0.8f * illumination);
             }
             // Draw skybox(tall buildings?)
-            App::DrawLine(startX, endY, endX, WINDOW_HEIGHT, 0, .3 * illumination, .3 * illumination);
+            //App::DrawLine(startX, endY, endX, WINDOW_HEIGHT, 0, .3 * illumination, .3 * illumination);
 
         }
     }
@@ -100,16 +99,14 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
 
     float level_offset_x = MAP_OFFSET_X;
     float level_offset_y = MAP_OFFSET_Y;
-    float reflection_angle = 0;
-
 
 
     for (int i = 0; i < num_rays; ++i)
     {
         float current_angle = start_angle - angle_increment * static_cast<float>(i);
         float ray_angle = MathUtility::ModDegrees(current_angle);
-        float ray_x_offset = cos(MathUtility::DegreeToRadians(ray_angle));
-        float ray_y_offset = sin(MathUtility::DegreeToRadians(ray_angle));
+        float ray_x_offset = cosf(MathUtility::DegreeToRadians(ray_angle));
+        float ray_y_offset = sinf(MathUtility::DegreeToRadians(ray_angle));
 
         float rx = player_pos.GetX();
         float ry = player_pos.GetY();
@@ -135,6 +132,11 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
                 {
                     break;
                 }
+                if (level->level_map.at(mp) == Cell::GOAL)
+                {
+                    goal_found = true;
+                    break;
+                }
                 if (level->level_map.at(mp) == Cell::BREAKABLE)
                 {
                     breakable_found = true;
@@ -158,19 +160,22 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
                 int diag_mp1 = my * MAP_WIDTH + prev_mx;
                 int diag_mp2 = prev_my * MAP_WIDTH + mx;
 
-                if (level->level_map.at(diag_mp1) == Cell::WALL || level->level_map.at(diag_mp2) == Cell::WALL)
+                if (diag_mp1 >= 0 && diag_mp1 < MAP_WIDTH * MAP_HEIGHT && (diag_mp2 >= 0 && diag_mp2 < MAP_WIDTH * MAP_HEIGHT))
                 {
-                    break;
-                }
-                if (level->level_map.at(diag_mp1) == Cell::GOAL || level->level_map.at(diag_mp2) == Cell::GOAL)
-                {
-                    goal_found = true;
-                    break;
-                }
-                if (level->level_map.at(diag_mp1) == Cell::INSTANTDEATH || level->level_map.at(diag_mp2) == Cell::INSTANTDEATH)
-                {
-                    hazard_found = true;
-                    break;
+                    if (level->level_map.at(diag_mp1) == Cell::WALL || level->level_map.at(diag_mp2) == Cell::WALL)
+                    {
+                        break;
+                    }
+                    if (level->level_map.at(diag_mp1) == Cell::GOAL || level->level_map.at(diag_mp2) == Cell::GOAL)
+                    {
+                        goal_found = true;
+                        break;
+                    }
+                    if (level->level_map.at(diag_mp1) == Cell::INSTANTDEATH || level->level_map.at(diag_mp2) == Cell::INSTANTDEATH)
+                    {
+                        hazard_found = true;
+                        break;
+                    }
                 }
             }
             // Increment distance if no collision
@@ -195,7 +200,6 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
         ray.hazard = hazard_found;
         ray.breakable = breakable_found;
         ray.correction_factor = MathUtility::ModDegrees(player_angle - ray_angle);
-        ray.reflection_angle = reflection_angle;
         calculated_rays.push_back(ray);
     }
     return calculated_rays;

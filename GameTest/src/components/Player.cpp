@@ -12,7 +12,8 @@ void Player::Update(float delta_time)
 	{
 		if (active_projectiles[i]->lifetime < 0)
 		{
-			projectiles->ReturnPoolObject(active_projectiles[i]);
+			bullets_on_screen--;
+			bullets->ReturnPoolObject(active_projectiles[i]);
 			active_projectiles.erase(active_projectiles.begin() + i);
 		}
 	}
@@ -34,12 +35,38 @@ void Player::Update(float delta_time)
 		physics.velocity.SetX(Mathf::Lerp(physics.velocity.GetX(), 0, physics.deceleration * delta_time));
 	}
 
-	if (App::IsKeyPressed(VK_SPACE) && refire_timer <= 0)
+	// weapon selection
+	if (App::IsKeyPressed(0x31)) selected_weapon = basic;
+	if (App::IsKeyPressed(0x32)) selected_weapon = bomb;
+
+
+	if (App::IsKeyPressed(VK_SPACE) && selected_weapon == projectile_type::basic && refire_timer <= 0)
 	{
-		Projectile* new_projectile = projectiles->GetPoolObject();
+		bullets_on_screen++;
+		Bullet* new_projectile = bullets->GetPoolObject();
 		active_projectiles.push_back(new_projectile);
 		new_projectile->Launch(transform);
 		refire_timer = max_refire_timer;
+	}
+
+	if (App::IsKeyPressed(VK_SPACE) && selected_weapon == projectile_type::bomb)
+	{
+		if (bomb_active)
+		{
+			if (!active_bomb->bursting)
+			{
+				active_bomb->bursting = true;
+			}
+		}
+
+		else
+		{
+			active_bomb = bombs->GetPoolObject();
+			active_bomb->launch_speed = 0.2;
+			active_bomb->type = projectile_type::bomb;
+			active_bomb->Launch(transform);
+
+		}
 	}
 
 	if (using_y)
@@ -89,13 +116,15 @@ void Player::Update(float delta_time)
 	float temp_x = MathUtility::ScaleToVirtualWidth(transform.position.GetX()) + transform.position.GetX() + physics.velocity.GetX();
 	float temp_y = MathUtility::ScaleToVirtualHeight(transform.position.GetY()) + transform.position.GetY() + physics.velocity.GetY();
 
-
-	if (!collider.CheckWallCollision(temp_x, MathUtility::ScaleToVirtualHeight(transform.position.GetY()), *current_level))
+	// player won't be moving horizontally but they might later 
+	if (collider.CheckWallCollision(temp_x, MathUtility::ScaleToVirtualHeight(transform.position.GetY()), *current_level) != Cell::WALL)
 	{
 		transform.position.SetX(transform.position.GetX() + physics.velocity.GetX());
 	}
 	else transform.position.SetX(transform.position.GetX() - physics.velocity.GetX()*2);
-	if (!collider.CheckWallCollision(MathUtility::ScaleToVirtualWidth(transform.position.GetX()), temp_y, *current_level))
+
+
+	if (collider.CheckWallCollision(MathUtility::ScaleToVirtualWidth(transform.position.GetX()), temp_y, *current_level) != Cell::WALL)
 	{
 		transform.position.SetY(transform.position.GetY() + physics.velocity.GetY());
 	}
@@ -129,20 +158,32 @@ void Player::Render()
 		projectile->Render();
 	}
 
+	// turret post 
 	ShapeRenderer::RenderSquare
 	(
-		MathUtility::ScaleToVirtualWidth(transform.position.GetX()), 0, 
-		MathUtility::ScaleToVirtualWidth(transform.position.GetX()), 
+		MathUtility::ScaleToVirtualWidth(transform.position.GetX() - 0.005), MAP_CELL_SIZE, 
+		MathUtility::ScaleToVirtualWidth(transform.position.GetX() + 0.005), 
 		MathUtility::ScaleToVirtualHeight(transform.position.GetY()), 
 		1, 0, 0.89
 	);
+	// turret base
+	ShapeRenderer::RenderSquare
+	(
+		MathUtility::ScaleToVirtualWidth(transform.position.GetX() - 0.05), MAP_CELL_SIZE,
+		MathUtility::ScaleToVirtualWidth(transform.position.GetX() + 0.05), MAP_CELL_SIZE + 10,
+		1, 0, 0.8
+	);
+
+	// body
 	ShapeRenderer::RenderShapeWithNSides
 	(
 		MathUtility::ScaleToVirtualWidth(transform.position.GetX()), 
 		MathUtility::ScaleToVirtualHeight(transform.position.GetY()), 
-		30, 1, 0, 1, 3, 
+		30, 1, 0, 1, 4, 
 		MathUtility::DegreeToRadians(MathUtility::ModDegrees(transform.direction_angle + 5))
 	);
+
+	// inner body
 	ShapeRenderer::RenderShapeWithNSides(MathUtility::ScaleToVirtualWidth
 	(
 		transform.position.GetX()), 
@@ -150,15 +191,16 @@ void Player::Render()
 		10, 1, 1, 1, 7, 
 		MathUtility::DegreeToRadians(MathUtility::ModDegrees(transform.direction_angle))
 	);
+
+	weapon_text = selected_weapon == basic ? "Bullets" : " Bomb";
+	App::Print(MAP_CELL_SIZE, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2, weapon_text.append(" active on screen: ").append(std::to_string(bullets_on_screen)).c_str());
 }
 
 void Player::InitializePlayer()
 {
-	//transform.position.Set(-0.8, 0, 0);
 	physics.max_speed = 0.01;
 	physics.turn_speed = 50;
 	collider.InitializeCollider(transform.position, 100, 100);
-	
 
 }
 

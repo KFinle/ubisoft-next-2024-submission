@@ -1,12 +1,13 @@
 #pragma once
 #include "vector"
+#include "../Globals.h"
 enum Cell
 {
 	EMPTY, 
-	WALL, 
+	WALL,
 	GOAL, 
 	PLAYER, 
-	ENEMYNEXUS, 
+	BORDER, 
 	BREAKABLE, 
 	INSTANTDEATH, 
 };
@@ -15,12 +16,12 @@ class LevelGenerator
 // https://www.youtube.com/watch?v=TlLIOgWYVpI
 
 public:
-
-	int map[MAP_HEIGHT][MAP_WIDTH];
+	std::vector<std::vector<int>> map;
+	//int map[MAP_HEIGHT][MAP_WIDTH];
 
 	int floor_spawn_rate = 50;
 	int breakable_spawn_rate = 90;
-	int death_spawn_rate = 97;
+	int death_spawn_rate = 98;
 
 	int number_of_generations = 5;
 	void GenerateMap();

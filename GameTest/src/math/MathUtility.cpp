@@ -32,12 +32,7 @@ float MathUtility::ModRadians(float radians)
 	return radians;
 }
 
-float MathUtility::ModDegrees(float degrees)
-{
-	return fmod(360 + fmod(degrees, 360), 360);
-}
-
-float MathUtility::FixedAngle(int angle)
+float MathUtility::ModDegrees(float angle)
 {
 	if (angle > 359) angle -= 360;
 	if (angle < 0) angle += 360;

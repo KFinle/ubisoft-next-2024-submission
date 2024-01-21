@@ -46,8 +46,8 @@ void Level::BuildMap()
 					case Cell::GOAL:
 						m_colour.Set(0.5, 0.1, 1);
 						break;
-					case Cell::ENEMYNEXUS:
-						m_colour.Set(1, 0, 1);
+					case Cell::BORDER:
+						m_colour.Set(.3, .3, .3);
 						break;
 					case Cell::BREAKABLE:
 						m_colour.Set(.8, 1, .1);

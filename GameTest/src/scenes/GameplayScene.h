@@ -1,20 +1,16 @@
+#pragma once
 #include "Scene.h"
-//#include "../objectpools/Pool.h"
-//#include "../components/Transform.h"
-//#include "../components/Physics.h"
-//#include "../components/Component.h"
+#include "memory"
+#include "vector"
 #include "../components/Player.h"
 #include "../entities/Entity.h"
 #include "../levels/Level.h"
-#include "vector"
-#include "memory"
 #include "../components/Raycaster.h"
 
 
 class GameplayScene : public Scene
 {
 public:
-
 	GameplayScene();
 	~GameplayScene();
 	void Render() override;
@@ -23,6 +19,7 @@ public:
 	void OnDestroy();
 	void Load();
 	void Destroy();
+	void CheckLevelState();
 
 	// templated entity creation within scene
 	template <typename... Components>
@@ -31,8 +28,10 @@ public:
 		return *static_cast<Entity<Components...>*>(entities.back().get());
 	}
 
-
 	Entity<Player> *player = new Entity<Player>();
+
+
+	int levels_cleared = 0;
 private:
 	std::vector<BaseEntity*> m_entities;
 	Level* level = nullptr;

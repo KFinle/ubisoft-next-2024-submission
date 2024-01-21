@@ -5,17 +5,18 @@
 #include "Component.h"
 #include "functional"
 #include "../levels/Level.h"
-
-struct Projectile : public Component<Projectile>
+#include "Particle.h"
+#include "../pools/Pool.h"
+enum projectile_type
 {
-	enum projectile_type
-	{
-		basic, bomb, light
-	};
+	basic, bomb
+};
+struct Bullet : public Component<Bullet>
+{
 	
-	Projectile() : Component(CollidingComponent | RenderableComponent)
+	Bullet() : Component(CollidingComponent | RenderableComponent)
 	{
-		m_id = TypeIDGenerator<Projectile>::GenerateNewID<Projectile>();
+		m_id = TypeIDGenerator<Bullet>::GenerateNewID<Bullet>();
 	}
 
 	void Update(float delta_time) 
@@ -56,10 +57,10 @@ struct Projectile : public Component<Projectile>
 		(
 			MathUtility::ScaleToVirtualWidth(transform.position.GetX()),
 			MathUtility::ScaleToVirtualHeight(transform.position.GetY()),
-			6,
-			//0.635, 1, 0.024,
+			size,
 			col.GetX()*lifetime, col.GetY()*lifetime, col.GetZ(),
-			36
+			15
+
 		);
 	}
 
@@ -84,25 +85,26 @@ struct Projectile : public Component<Projectile>
 	}
 
 	//Vector3 col = Vector3(0.635, 1, 0.024);
-	Vector3 col = Vector3(1, 1, 1);
+	Vector3 col = Vector3(1, .2, 1);
 
 	Transform transform;
 	Physics physics;
 	bool launched = false;
 	float launch_speed = 1;
 	projectile_type type = basic;
-	bool hit = false;
 	float size = 15;
 	float delta_y;
 	float delta_x;
 	float next_x;
 	float next_y;
 	bool active = false;
-
-
-	const Level* level = nullptr;
-
 	float lifetime = 3;
 	ComponentTypeID m_id;
 	std::function<bool(float, float)> collision_callback;
+
+	// bomb stuff
+	//Pool<Particle>* particles = Pool<Particle>::GetInstance(50);
+	//bool bursting = false;
+	//bool exploded = false;
+	//float bomb_timer = 5;
 };

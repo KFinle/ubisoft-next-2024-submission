@@ -1,30 +1,67 @@
 #pragma once
-#include "../App/App.h"
-//constexpr int _WINDOW_WIDTH = APP_VIRTUAL_WIDTH;
-//constexpr int _WINDOW_HEIGHT = APP_VIRTUAL_HEIGHT;
-////extern int WINDOW_HEIGHT;
-//constexpr int MINIMAP_CELL_SIZE = 8;
-//constexpr int MAP_HEIGHT = 16;
-//constexpr int MAP_WIDTH = 20;
-//constexpr int MAP_SIZE = MAP_HEIGHT * MAP_WIDTH;
-//constexpr int MAP_CELL_SIZE = _WINDOW_HEIGHT / MAP_HEIGHT;
-//
-//constexpr int MAP_OFFSET_X = MAP_CELL_SIZE*3;
-//constexpr int MAP_OFFSET_Y = 0 ;
-//
-//
+#include "../App/app.h"
+#include "../App/main.h"
+
+/////////////////////////////////////////////////////////////////////////////////////
+// WARNING: Changing these settings could have disastrous effects across the game! //
+// Be careful :)																   //
+/////////////////////////////////////////////////////////////////////////////////////
+
+struct GlobalSettings
+{
+
+	static GlobalSettings* GetInstance()
+	{
+		if (instance == nullptr)
+		{
+			instance = new GlobalSettings();
+		}
+		return instance;
+
+	}
+
+	static void GlobalSettings::SetMapAttributes(int width, int height, int cell_size)
+	{
+		SetMapWidth(width);
+		SetMapHeight(height);
+		SetMapCellSize(cell_size);
+		MAP_SIZE = MAP_HEIGHT * MAP_WIDTH;
+		MAP_CELL_SIZE = _WINDOW_HEIGHT / MAP_HEIGHT;
+		MAP_OFFSET_X = MAP_CELL_SIZE * 3;
+	}
+
+	static int _WINDOW_WIDTH;
+	static int _WINDOW_HEIGHT;
+	static int MAP_HEIGHT;
+	static int MAP_WIDTH;
+	static int MAP_SIZE;
+	static int MAP_CELL_SIZE;
+	static int MAP_OFFSET_X;
+	static int MAP_OFFSET_Y;
 
 
-constexpr int _WINDOW_WIDTH = APP_VIRTUAL_WIDTH;
-constexpr int _WINDOW_HEIGHT = APP_VIRTUAL_HEIGHT;
-//extern int WINDOW_HEIGHT;
-constexpr int MINIMAP_CELL_SIZE = 8;
-constexpr int MAP_HEIGHT = 10;
-constexpr int MAP_WIDTH = 13;
-constexpr int MAP_SIZE = MAP_HEIGHT * MAP_WIDTH;
-constexpr int MAP_CELL_SIZE = _WINDOW_HEIGHT / MAP_HEIGHT;
+private:
+	static GlobalSettings* instance;
+	GlobalSettings() {}
+	static void GlobalSettings::SetMapHeight(int height)
+	{
+		MAP_HEIGHT = height;
+	}
+	static void GlobalSettings::SetMapWidth(int width)
+	{
+		MAP_WIDTH = width;
+	}
+	static void GlobalSettings::SetMapCellSize(int cell_size)
+	{
+		MAP_CELL_SIZE = cell_size;
+	}
+};
 
-constexpr int MAP_OFFSET_X = MAP_CELL_SIZE * 3;
-constexpr int MAP_OFFSET_Y = 0;
-
-
+static int _WINDOW_WIDTH				= WINDOW_WIDTH;
+static int _WINDOW_HEIGHT				= WINDOW_HEIGHT;
+static int MAP_HEIGHT					= 10;
+static int MAP_WIDTH					= 13;
+static int MAP_SIZE						= MAP_HEIGHT * MAP_WIDTH;
+static int MAP_CELL_SIZE				= _WINDOW_HEIGHT / MAP_HEIGHT;
+static int MAP_OFFSET_X					= MAP_CELL_SIZE * 3;
+static int MAP_OFFSET_Y					= 0;

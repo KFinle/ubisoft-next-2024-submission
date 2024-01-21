@@ -2,6 +2,7 @@
 #include "SceneController.h"
 #include "GameplayScene.h"
 #include "MenuScene.h"
+#include "GameOverScene.h"
 
 SceneController::SceneController()
 {
@@ -53,8 +54,14 @@ void SceneController::Update(float deltaTime)
 
 		if (current_scene->m_scene_type == scene_type::gameplay)
 		{
-
 			if (current_scene->scene_ended)
+			{
+				LoadScene(scene_type::gameover);
+			}
+		}
+		if (current_scene->m_scene_type == scene_type::gameover)
+		{
+			if (App::IsKeyPressed(APP_PAD_EMUL_START))
 			{
 				LoadScene(scene_type::menu);
 			}
@@ -85,7 +92,6 @@ void SceneController::LoadScene(scene_type type)
 {
 	if (current_scene != nullptr)
 	{
-		current_scene->Destroy();
 		delete current_scene;
 		current_scene = nullptr;
 	}
@@ -99,6 +105,7 @@ void SceneController::LoadScene(scene_type type)
 		current_scene = new GameplayScene();
 		break;
 	case gameover:
+		current_scene = new GameOverScene();
 		break;
 	default:
 		break;

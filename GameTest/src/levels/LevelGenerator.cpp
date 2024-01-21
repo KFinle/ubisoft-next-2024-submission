@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "time.h"
 #include "LevelGenerator.h"
+#include "../scenes/GameplayScene.h"
 
 void LevelGenerator::GenerateMap()
 {
+	map.resize(MAP_HEIGHT, std::vector<int>(MAP_WIDTH, Cell::EMPTY));
 	int seed = time(NULL);
 
 	srand(seed);
@@ -72,22 +74,32 @@ void LevelGenerator::FixMap()
 	{
 		for (int w = 0; w < MAP_WIDTH; w++)
 		{
-			if (map[h][w] == Cell::WALL && NumberOfNearWalls(w, h) >= 5)
+
+			// if there are too many walls 
+			if (map[h][w] == Cell::WALL && NumberOfNearWalls(w, h) >= 4)
 			{
 				map[h][w] = Cell::EMPTY;
 			}
+
+			// if there aren't enough walls 
 			if (map[h][w] == Cell::EMPTY && NumberOfNearWalls(w, h) <= 1)
 			{
 				map[h][w] = Cell::WALL;
 			}
+
+			// ensure no walls too close to player
 			if ( w == 1 || w == 2 )
 			{
 				map[h][w] = Cell::EMPTY;
 			}
+
+			// borders
 			if ( w == 0 || h == 0 || h == MAP_HEIGHT - 1 || w == MAP_WIDTH - 1)
 			{
-				map[h][w] = Cell::WALL;
+				map[h][w] = Cell::BORDER;
 			}
+
+			// player spawn point
 			if (w == 2 && h == MAP_HEIGHT / 2)
 			{
 				map[h][w] = Cell::PLAYER;
@@ -108,7 +120,7 @@ void LevelGenerator::SpawnWinSquare()
 		int win_square_y = rand() % (MAP_HEIGHT - 2) + 1;
 		
 		// ensure the goal isn't too close to the player
-		while (win_square_x < MAP_WIDTH / 2)
+		while (win_square_x < MAP_WIDTH / 3)
 		{
 			win_square_x = rand() % (MAP_WIDTH - 2) + 1;
 		}

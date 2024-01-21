@@ -8,7 +8,7 @@
 GameplayScene::GameplayScene()
 {
 	this->m_scene_type = scene_type::gameplay;
-
+	levels_cleared = 0;
 	Load();
 }
 
@@ -19,14 +19,17 @@ GameplayScene::~GameplayScene()
 
 void GameplayScene::OnLoad()
 {
+	if (player->GetComponent<Player>()->active_projectiles.size() > 0)
+	{
+		player->GetComponent<Player>()->active_projectiles.clear();
+		player->GetComponent<Player>()->bullets_on_screen = 0;
+	}
 	level = new Level();
 	level->level_map = level->RandomizeLevel();
 	level->BuildMap();
 	player->GetComponent<Player>()->current_level = level;
 	player->GetComponent<Player>()->transform.SetPosition(level->GetPositionFromLevelCell(level->player_spawn));
 	raycaster = new Raycaster();
-
-
 }
 
 
@@ -57,7 +60,9 @@ void GameplayScene::Render()
 // for updating systems
 void GameplayScene::Update(float delta_time)
 {
+	CheckLevelState();
 
+	// for testing level generation
 	if (App::IsKeyPressed(VK_RETURN))
 	{
 		this->Load();
@@ -69,15 +74,20 @@ void GameplayScene::Update(float delta_time)
 
 	hidemap = App::IsKeyPressed(VK_TAB) ? true : false;
 
-	raycaster->num_rays = hidemap ? WINDOW_WIDTH : 15;
-	raycaster->fov_degrees = hidemap ? 60 : 10;
+	raycaster->num_rays = hidemap ? WINDOW_WIDTH : 30;
+	raycaster->fov_degrees = hidemap ? 60 : 25;
 
 
 	for (auto* proj : player->GetComponent<Player>()->active_projectiles)
 	{
 		auto collision_lambda = [&](float x, float y)
 		{
-			return player->GetComponent<Player>()->collider.CheckWallCollision(x, y, *level);
+			// I know this is bad but it's very late and I'm very tired
+			// To be cleaned up if I have time
+			return player->GetComponent<Player>()->collider.CheckWallCollision(x, y, *level) == Cell::WALL	 ? true : 
+				   player->GetComponent<Player>()->collider.CheckWallCollision(x, y, *level) == Cell::BREAKABLE ? true :
+				   player->GetComponent<Player>()->collider.CheckWallCollision(x, y, *level) == Cell::BORDER ? true :
+				   false;
 		};
 		proj->SetCollisionCallback(collision_lambda);
 		
@@ -85,12 +95,9 @@ void GameplayScene::Update(float delta_time)
 
 }
 
-
-
 void GameplayScene::OnDestroy()
 {
-	//player->~Entity();
-	//delete player;
+	delete player;
 	delete level;
 }
 
@@ -103,4 +110,16 @@ void GameplayScene::Load()
 void GameplayScene::Destroy()
 {
 	OnDestroy();
+}
+
+void GameplayScene::CheckLevelState()
+{
+	if (level->breakable_found) level->level_map.at(level->breakable_found) = Cell::EMPTY;
+	if (level->death_found) this->scene_ended = true;
+	if (level->goal_found)
+	{
+		levels_cleared++;
+		this->Load();
+	}
+		
 }
