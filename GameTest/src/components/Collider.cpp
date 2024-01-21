@@ -31,6 +31,11 @@ bool Collider::CheckWallCollision(int direction_x, int direction_y, Level& level
     }
 }
 
+Vector3 Collider::GetPosition()
+{
+    return Vector3();
+}
+
 void Collider::DrawColliderLines()
 {
     const float half_width = width / 2;

@@ -53,6 +53,7 @@ void SceneController::Update(float deltaTime)
 
 		if (current_scene->m_scene_type == scene_type::gameplay)
 		{
+
 			if (current_scene->scene_ended)
 			{
 				LoadScene(scene_type::menu);

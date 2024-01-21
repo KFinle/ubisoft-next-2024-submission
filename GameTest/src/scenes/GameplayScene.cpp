@@ -31,22 +31,22 @@ void GameplayScene::OnLoad()
 
 void GameplayScene::Render()
 {
-		raycaster->RenderRays();
-	if (hidemap)
-	{
-		raycaster->Render3D();
-	}
-		
-	if (!hidemap)
-	{
+	//if (hidemap)
+	//{
+	//	raycaster->Render3D();
+	//}
+	//	
+	//if (!hidemap)
+	//{
 		level->BuildMap();
+		raycaster->RenderRays();
 		player->GetComponent<Player>()->Render();
-	}
+	//}
 
-	if (player->GetComponent<Player>()->collider.currently_colliding)
-	{
-		player->GetComponent<Player>()->collider.DrawColliderLines();
-	}
+	//if (player->GetComponent<Player>()->collider.currently_colliding)
+	//{
+	//	player->GetComponent<Player>()->collider.DrawColliderLines();
+	//}
 
 
 
@@ -55,12 +55,29 @@ void GameplayScene::Render()
 // for updating systems
 void GameplayScene::Update(float delta_time)
 {
+
+	if (App::IsKeyPressed(VK_RETURN))
+	{
+		this->Load();
+	}
+
+
 	player->GetComponent<Player>()->Update(delta_time);
 	raycaster->rays = raycaster->CalculateRays(*player, level);
 
 	hidemap = App::IsKeyPressed(VK_TAB) ? true : false;
 
-	HandleCollisions<Collider>();
+	for (auto* proj : player->GetComponent<Player>()->active_projectiles)
+	{
+		if (proj->mp > 0)
+		{
+			if (level->level_map.at(proj->mp) != 0)
+			{
+				level->level_map.at(proj->mp) == 0;
+			}
+		}
+	}
+
 }
 
 

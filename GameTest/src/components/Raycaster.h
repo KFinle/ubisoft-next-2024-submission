@@ -37,7 +37,7 @@ public:
 	std::vector<ray> rays;
 	float fov_degrees = 10.0f;
 	//int num_rays = WINDOW_WIDTH;
-	int num_rays = 1;
+	int num_rays = 15;
 
 	int max_distance = 500;			// Maximum allowed distance without collision
 	int max_steps = 1000;			// Maximum number of steps

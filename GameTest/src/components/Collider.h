@@ -25,6 +25,6 @@ struct Collider : public Component<Collider>
 	float height = 10;
 	Vector3 position;
 
-	bool currently_colliding = true;
+	bool currently_colliding = false;
 
 };

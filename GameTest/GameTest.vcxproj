@@ -184,6 +184,7 @@
     <ClInclude Include="App\SimpleController.h" />
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
+    <ClInclude Include="src\components\Particle.h" />
     <ClInclude Include="src\components\Projectile.h" />
     <ClInclude Include="src\components\Raycaster.h" />
     <ClInclude Include="src\components\Collider.h" />

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Level.h"
-
+#include "LevelGenerator.h"
 
 std::vector<int> Level::RandomizeLevel()
 {
@@ -32,32 +32,57 @@ void Level::BuildMap()
 	{
 		for (x = 0; x < MAP_WIDTH; x++)
 		{
-
-			//x_offset = x * MAP_CELL_SIZE + MAP_OFFSET_X;
-			//y_offset = y * MAP_CELL_SIZE + MAP_OFFSET_Y;
 			x_offset = x * MAP_CELL_SIZE;
 			y_offset = y * MAP_CELL_SIZE;
 			int mappos = y * MAP_WIDTH + x;
 
 			if (mappos >= 0 && mappos < MAP_SIZE)
 			{
+				//if (level_map.at(mappos) == 1)
+				//{
+				//	m_colour.Set(1, 1, 1);
+				//}
+				//else if (level_map.at(mappos) == 2)
+				//{
+				//	win_square = (y * MAP_WIDTH + x);
+				//	m_colour.Set(0.5, 0.1, 1);
+				//}
+				//else if (level_map.at(mappos) == 4)
+				//{
+				//	win_square = (y * MAP_WIDTH + x);
+				//	m_colour.Set(1, 0, 1);
+				//}
+				//else m_colour.Set(0, 0, 0);
 
-				if (level_map.at(mappos) == 1)
+				switch (level_map.at(mappos))
 				{
-					m_colour.Set(1, 1, 1);
+					case Cell::WALL:
+						m_colour.Set(1, 1, 1);
+						break;
+					case Cell::GOAL:
+						m_colour.Set(0.5, 0.1, 1);
+						break;
+					case Cell::ENEMYNEXUS:
+						m_colour.Set(1, 0, 1);
+						break;
+					case Cell::BREAKABLE:
+						m_colour.Set(.8, 1, .1);
+						break;
+					case Cell::INSTANTDEATH:
+						m_colour.Set(1, 0, 0);
+						break;
+					default:
+						m_colour.Set(0, 0, 0);
+						break;
 				}
-				else if (level_map.at(mappos) == 2)
-				{
-					win_square = (y * MAP_WIDTH + x);
-					m_colour.Set(0.5, 0.1, 1);
-				}
-				else if (level_map.at(mappos) == 4)
-				{
-					win_square = (y * MAP_WIDTH + x);
-					m_colour.Set(1, 0, 1);
-				}
-				//else m_colour.Set(0.1, 0.1, 0.1);
-				else m_colour.Set(0, 0, 0);
+
+
+
+
+
+
+
+
 
 
 				// only need to assess this on first pass
@@ -70,10 +95,7 @@ void Level::BuildMap()
 				}
 			}
 
-
 			ShapeRenderer::RenderSquare(x_offset + 1, y_offset, x_offset + MAP_CELL_SIZE - 1, y_offset + MAP_CELL_SIZE - 1, m_colour.r, m_colour.g, m_colour.b);
-			//ShapeRenderer::RenderShapeWithNPolygons(x_offset + MAP_CELL_SIZE * 4, y_offset + MAP_CELL_SIZE / 2, MAP_CELL_SIZE / 2, m_colour.r, m_colour.g, m_colour.b, 4);
-
 		}
 	}
 }

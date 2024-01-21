@@ -16,6 +16,17 @@ void LevelGenerator::GenerateMap()
 			{
 				map[h][w] = Cell::WALL;
 			}
+			if (rand() % 100 > breakable_spawn_rate)
+			{
+				map[h][w] = Cell::BREAKABLE;
+			}
+			if (rand() % 100 > death_spawn_rate)
+			{
+				map[h][w] = Cell::INSTANTDEATH;
+			}
+
+
+
 		}
 	}
 
@@ -27,7 +38,6 @@ void LevelGenerator::GenerateMap()
 	CreateRooms();
 
 	// ensure there's a spawnpoint for the player
-// for now, we'll start at centre
 	map[MAP_HEIGHT / 2][1] = Cell::PLAYER;
 
 
@@ -74,7 +84,6 @@ void LevelGenerator::FixMap()
 			{
 				map[h][w] = Cell::WALL;
 			}
-
 			if ( w == 1 || w == 2 )
 			{
 				map[h][w] = Cell::EMPTY;
@@ -111,7 +120,9 @@ void LevelGenerator::CreateRooms()
 			for (int w = room_x; w < room_x + room_width; ++w)
 			{
 				map[h][w] = Cell::EMPTY;
+
 			}
 		}
 	}
 }
+

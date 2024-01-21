@@ -85,6 +85,7 @@
     <ClInclude Include="src\components\Raycaster.h" />
     <ClInclude Include="src\components\Projectile.h" />
     <ClInclude Include="src\pools\Pool.h" />
+    <ClInclude Include="src\components\Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="stb_image">

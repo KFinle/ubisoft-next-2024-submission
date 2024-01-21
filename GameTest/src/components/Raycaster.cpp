@@ -120,10 +120,8 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
 
             if (mp >= 0 && mp < MAP_WIDTH * MAP_HEIGHT)
             {
-                if (level->level_map.at(mp) == 1)
+                if (level->level_map.at(mp) != 0)
                 {
-
-
                     break;
                 }
 

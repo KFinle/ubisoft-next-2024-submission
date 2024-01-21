@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "../levels/Level.h"
 #include "../pools/Pool.h"
+#include "unordered_map"
 
 //////////////////////////////////////////////////////////////////////////
 // Transform, Physics, and Input should definitely be decoupled, but    //
@@ -30,8 +31,8 @@ public:
 
 
 
-	Pool <Projectile> projectiles = Pool<Projectile>(10);
-
+	Pool<Projectile>* projectiles = Pool<Projectile>::GetInstance(100);
+	std::vector<Projectile*> active_projectiles;
 
 	void Update(float delta_time);
 	void Render();
@@ -39,6 +40,9 @@ public:
 	bool using_x = false;
 	bool using_y = false;
 	Level* current_level = nullptr;
+
+	float refire_timer = 0;
+	float max_refire_timer = 0.1;
 
 	// we'll use these to customize pivoting if needed
 	float last_x = 0;
