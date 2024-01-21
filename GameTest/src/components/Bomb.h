@@ -21,6 +21,8 @@ struct Bomb : public Bullet
 		}
 		if (active &&   !exploded)
 		{
+			ClearParticles();
+
 			// Update position based on speed and direction
 			float new_x = transform.position.GetX() + delta_x * physics.current_speed * delta_time;
 			float new_y = transform.position.GetY() + delta_y * physics.current_speed * delta_time;
@@ -53,7 +55,7 @@ struct Bomb : public Bullet
 
 	void Render()
 	{
-		for (auto& particle : active_particles)
+		for (auto& particle : active_bomb_particles)
 		{
 			particle->Render();
 		}
@@ -66,7 +68,7 @@ struct Bomb : public Bullet
 			6
 		);
 		App::Print(100, 500, current_coordinates.ToString().c_str());
-		App::Print(350, 500, std::to_string(active_particles.size()).c_str());
+		App::Print(350, 500, std::to_string(active_bomb_particles.size()).c_str());
 
 	}
 
@@ -78,6 +80,15 @@ struct Bomb : public Bullet
 
 		CalculateDeltas(launch_point.direction_angle);
 		physics.current_speed = launch_speed;
+	}
+
+	void ClearParticles()
+	{
+		for (int i = 0; i < active_bomb_particles.size(); i++)
+		{
+			bomb_particles->ReturnPoolObject(active_bomb_particles[i]);
+			active_bomb_particles.erase(active_bomb_particles.begin() + i);
+		}
 	}
 
 	void CalculateDeltas(float direction)
@@ -96,16 +107,16 @@ struct Bomb : public Bullet
 
 	void Explode(float delta_time)
 	{
-		for (int i = 0; i < active_particles.size(); i++)
+		for (int i = 0; i < active_bomb_particles.size(); i++)
 		{
-			if (active_particles[i]->lifetime <= 0)
+			if (active_bomb_particles[i]->lifetime <= 0)
 			{
-				particles->ReturnPoolObject(active_particles[i]);
-				active_particles.erase(active_particles.begin() + i);
+				bomb_particles->ReturnPoolObject(active_bomb_particles[i]);
+				active_bomb_particles.erase(active_bomb_particles.begin() + i);
 			}
 			else
 			{
-				active_particles[i]->Update(delta_time);
+				active_bomb_particles[i]->Update(delta_time);
 			}
 		}
 
@@ -124,24 +135,44 @@ struct Bomb : public Bullet
 				if (current_level->level_map[tile] == Cell::GOAL)
 				{
 					goal_destroyed = true;
+					current_level->level_map[tile] = Cell::EMPTY;
+					Particle* new_particle = goal_particles->GetPoolObject();
+					new_particle->Set(transform, particle_emitter::goal_emitter);
+					active_bomb_particles.push_back(new_particle);
 				}
 				if (current_level->level_map[tile] == Cell::INSTANTDEATH)
 				{
 					death_hit = true;
+					current_level->level_map[tile] = Cell::EMPTY;
+					Particle* new_particle = death_particles->GetPoolObject();
+					new_particle->Set(transform, particle_emitter::death_emitter);
+					active_bomb_particles.push_back(new_particle);
 				}
 				if (current_level->level_map[tile] == Cell::WALL)
 				{
 					current_level->level_map[tile] = Cell::EMPTY;
+					Particle* new_particle = bomb_particles->GetPoolObject();
+					new_particle->Set(transform, particle_emitter::wall_emitter);
+					active_bomb_particles.push_back(new_particle);
+				}
+				if (current_level->level_map[tile] == Cell::BREAKABLE)
+				{
+					current_level->level_map[tile] = Cell::EMPTY;
+					Particle* new_particle = breakable_particles->GetPoolObject();
+					new_particle->Set(transform, particle_emitter::breakable_emitter);
+					active_bomb_particles.push_back(new_particle);
 				}
 			}
+
+			Particle* new_particle = bomb_particles->GetPoolObject();
+			new_particle->Set(transform, particle_emitter::bomb_emitter);
+			active_bomb_particles.push_back(new_particle);
 
 
 
 
 			// start particles, blow up walls
-			Particle* new_particle = particles->GetPoolObject();
-			new_particle->Set(transform);
-			active_particles.push_back(new_particle);
+
 			
 
 			//if no particles remain
@@ -205,8 +236,18 @@ struct Bomb : public Bullet
 
 
 	// bomb stuff
-	Pool<Particle>* particles = Pool<Particle>::GetInstance(50);
-	std::vector<Particle*> active_particles;
+	Pool<Particle>* bomb_particles = Pool<Particle>::GetInstance(200);
+	Pool<Particle>* wall_particles = Pool<Particle>::GetInstance(200);
+	Pool<Particle>* breakable_particles = Pool<Particle>::GetInstance(200);
+	Pool<Particle>* goal_particles = Pool<Particle>::GetInstance(200);
+	Pool<Particle>* death_particles = Pool<Particle>::GetInstance(200);
+
+	std::vector<Particle*> active_bomb_particles;
+	//std::vector<Particle*> active_wall_particles;
+	//std::vector<Particle*> active_goal_particles;
+	//std::vector<Particle*> active_death_particles;
+	//std::vector<Particle*> active_break_a
+
 	bool bursting = false;
 	bool exploded = false;
 	float bomb_timer = 1;

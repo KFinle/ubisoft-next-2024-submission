@@ -37,8 +37,10 @@ public:
 	int bullets_on_screen = 0;
 	std::vector<Bullet*> active_projectiles;
 	Bomb* active_bomb = nullptr;
-	int max_bombs = 3;
-	int bombs_remaining = 3;
+	int max_bombs = 5;
+	int bombs_remaining = 5;
+	bool destroyed_goal = false;
+	bool destroyed_death = false;
 
 
 

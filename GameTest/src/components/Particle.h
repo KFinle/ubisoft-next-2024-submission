@@ -2,31 +2,70 @@
 #include "../math/Mathf.h"
 
 
+enum particle_emitter
+	{
+		bomb_emitter, wall_emitter, goal_emitter, death_emitter, breakable_emitter
+	};
 struct Particle : public Component<Particle>
 {
-	enum particle_emitter
-	{
-		bomb, wall, goal, death
-	};
 	Particle()
 	{
 	}
-	void Set(Transform transform)
+	void Set(Transform transform, particle_emitter type)
 	{
 		this->transform = transform;
+		switch (type)
+		{
+		case particle_emitter::bomb_emitter:
+			m_colour.Set(1, 0, 0);
+			size = 4;
+			num_sides = 10;
+			dispersion_rate = 1.0f;
+			break;
+		case particle_emitter::breakable_emitter:
+			m_colour.Set(1, 0, 1);
+			size = 5;
+			num_sides = 4;
+			dispersion_rate = 1.0f;
+			break;
+		case particle_emitter::wall_emitter:
+			m_colour.Set(1, 1, 1);
+			size = 5;
+			num_sides = 4;
+			dispersion_rate = 3.0f;
+			break;
+		case particle_emitter::goal_emitter:
+			m_colour.Set(0, 1, 0);
+			size = 15;
+			num_sides = 4;
+			dispersion_rate = 6.5f;
+			break;
+		case particle_emitter::death_emitter:
+			m_colour.Set(1, 0, 0);
+			size = 15;
+			num_sides = 9;
+			dispersion_rate = 6.5f;
+			break;
+		default:
+			m_colour.Set(1, 0, 0);
+			size = 4;
+			num_sides = 10;
+			dispersion_rate = 1;
+			break;
+		}
 	}
 	void Update(float delta_time)
 	{
 		CalculateDeltas(MathUtility::RandomFloat(0, 359));
-		transform.position.SetX(transform.position.GetX() + delta_x * delta_time);
-		transform.position.SetY(transform.position.GetY() + delta_y * delta_time);
+		transform.position.SetX(transform.position.GetX() + (dispersion_rate * delta_x) * delta_time);
+		transform.position.SetY(transform.position.GetY() + (dispersion_rate * delta_y) * delta_time);
 	}
 	void Render()
 	{
 		ShapeRenderer::RenderShapeWithNSides(
-			MathUtility::ScaleToVirtualWidth(transform.position.GetX()), 
-			MathUtility::ScaleToVirtualHeight(transform.position.GetY()), 
-			4, 1, 0, 0, 10
+			MathUtility::ScaleToVirtualWidth(transform.position.GetX()),
+			MathUtility::ScaleToVirtualHeight(transform.position.GetY()),
+			size, m_colour.r, m_colour.g, m_colour.b, num_sides
 		);
 	}
 	void CalculateDeltas(float direction)
@@ -37,9 +76,12 @@ struct Particle : public Component<Particle>
 
 	particle_emitter emmiter_type;
 	Transform transform;
+	float size = 4;
 	float delta_x;
 	float delta_y;
 	float lifetime = 1.5f;
-	float dispersion_rate = 0.5f;
+	float dispersion_rate = 1.0f;
+	int num_sides = 10;
+	render_colour m_colour;
 
 };

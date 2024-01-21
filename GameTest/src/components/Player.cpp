@@ -8,24 +8,21 @@
 
 void Player::Update(float delta_time)
 {
-	//if (bomb_active && active_bomb->exploded)
-	//{
-	//	bullets_on_screen--;
-	//	bombs->ReturnPoolObject(active_bomb);
-	//	delete active_bomb;
-	//	active_bomb = nullptr;
-	//}
+
 	for (int i = 0; i < active_projectiles.size(); i++)
 	{
 		if (dynamic_cast<Bomb*>(active_projectiles[i]))
 		{
 			if (bomb_active && static_cast<Bomb*>(active_projectiles[i])->lifetime <= 0)
 			{
+				if (active_bomb->goal_destroyed) destroyed_goal  = true;
+				if (active_bomb->death_hit)
+				{
+					destroyed_death = true;
+				}
 				bullets_on_screen--;
 				bombs->ReturnPoolObject(active_bomb);
-				//delete active_bomb;
 				active_bomb = nullptr;
-				//delete active_projectiles[i];
 				active_projectiles.erase(active_projectiles.begin() + i);
 			}
 		}

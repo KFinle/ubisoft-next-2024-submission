@@ -101,10 +101,7 @@ struct Bullet : public Component<Bullet>
 	float lifetime = 3;
 	ComponentTypeID m_id;
 	std::function<bool(float, float)> collision_callback;
+	Pool<Particle>* particles = Pool<Particle>::GetInstance(50);
 
-	// bomb stuff
-	//Pool<Particle>* particles = Pool<Particle>::GetInstance(50);
-	//bool bursting = false;
-	//bool exploded = false;
-	//float bomb_timer = 5;
+
 };

@@ -19,18 +19,14 @@ GameplayScene::~GameplayScene()
 
 void GameplayScene::OnLoad()
 {
-	if (player->GetComponent<Player>()->active_projectiles.size() > 0)
-	{
-		player->GetComponent<Player>()->active_projectiles.clear();
-		player->GetComponent<Player>()->bullets_on_screen = 0;
-		player->GetComponent<Player>()->active_bomb = nullptr;
-		player->GetComponent<Player>()->bombs_remaining = player->GetComponent<Player>()->max_bombs;
-
-	}
 	level = new Level();
 	level->level_map = level->RandomizeLevel();
 	level->BuildMap();
 	player->GetComponent<Player>()->current_level = level;
+	player->GetComponent<Player>()->active_projectiles.clear();
+	player->GetComponent<Player>()->bullets_on_screen = 0;
+	player->GetComponent<Player>()->active_bomb = nullptr;
+	player->GetComponent<Player>()->bombs_remaining = player->GetComponent<Player>()->max_bombs;
 	player->GetComponent<Player>()->transform.SetPosition(level->GetPositionFromLevelCell(level->player_spawn));
 	raycaster = new Raycaster();
 }
@@ -50,20 +46,17 @@ void GameplayScene::Render()
 		raycaster->RenderRays();
 		player->GetComponent<Player>()->Render();
 	}
-
-	//if (player->GetComponent<Player>()->collider.currently_colliding)
-	//{
-	//	player->GetComponent<Player>()->collider.DrawColliderLines();
-	//}
-
-
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 400, std::string(" -------- ").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 420, std::string("- Cleared -").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 440, std::string("- ").append(std::to_string(levels_cleared)).append(" - ").c_str());
+	App::Print(WINDOW_WIDTH - MAP_CELL_SIZE * 2, MAP_HEIGHT * MAP_CELL_SIZE - MAP_CELL_SIZE / 2 - 460, std::string(" -------- ").c_str());
 
 }
 
 // for updating systems
 void GameplayScene::Update(float delta_time)
 {
-	CheckLevelState();
+	CheckLevelState(delta_time);
 
 	// for testing level generation
 	if (App::IsKeyPressed(VK_RETURN))
@@ -75,8 +68,8 @@ void GameplayScene::Update(float delta_time)
 	player->GetComponent<Player>()->Update(delta_time);
 	raycaster->rays = raycaster->CalculateRays(*player, level);
 
+	// 3d view
 	hidemap = App::IsKeyPressed(VK_TAB) ? true : false;
-
 	raycaster->num_rays = hidemap ? WINDOW_WIDTH : 30;
 	raycaster->fov_degrees = hidemap ? 60 : 25;
 
@@ -102,6 +95,7 @@ void GameplayScene::OnDestroy()
 {
 	delete player;
 	delete level;
+	delete raycaster;
 }
 
 void GameplayScene::Load()
@@ -115,8 +109,18 @@ void GameplayScene::Destroy()
 	OnDestroy();
 }
 
-void GameplayScene::CheckLevelState()
+void GameplayScene::CheckLevelState(float delta_time)
 {
+	if (player->GetComponent<Player>()->destroyed_goal)
+	{
+		TransitionToGameOver(delta_time);
+	}
+	if (player->GetComponent<Player>()->destroyed_death)
+	{
+		TransitionToGameOver(delta_time);
+	}
+
+
 	if (level->breakable_found) level->level_map.at(level->breakable_found) = Cell::EMPTY;
 	if (level->death_found) this->scene_ended = true;
 	if (level->goal_found)
@@ -125,4 +129,13 @@ void GameplayScene::CheckLevelState()
 		this->Load();
 	}
 		
+}
+
+void GameplayScene::TransitionToGameOver(float delta_time)
+{
+	transition_time -= delta_time;
+	if (transition_time < 0)
+	{
+		this->scene_ended = true;
+	}
 }

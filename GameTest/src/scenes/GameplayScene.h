@@ -19,7 +19,8 @@ public:
 	void OnDestroy();
 	void Load();
 	void Destroy();
-	void CheckLevelState();
+	void CheckLevelState(float delta_time);
+	void TransitionToGameOver(float delta_time);
 
 	// templated entity creation within scene
 	template <typename... Components>
@@ -37,5 +38,6 @@ private:
 	Level* level = nullptr;
 	Raycaster* raycaster = nullptr;
 	bool hidemap = false;
+	float transition_time = 1;
 };
 
