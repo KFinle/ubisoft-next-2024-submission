@@ -38,22 +38,6 @@ void Level::BuildMap()
 
 			if (mappos >= 0 && mappos < MAP_SIZE)
 			{
-				//if (level_map.at(mappos) == 1)
-				//{
-				//	m_colour.Set(1, 1, 1);
-				//}
-				//else if (level_map.at(mappos) == 2)
-				//{
-				//	win_square = (y * MAP_WIDTH + x);
-				//	m_colour.Set(0.5, 0.1, 1);
-				//}
-				//else if (level_map.at(mappos) == 4)
-				//{
-				//	win_square = (y * MAP_WIDTH + x);
-				//	m_colour.Set(1, 0, 1);
-				//}
-				//else m_colour.Set(0, 0, 0);
-
 				switch (level_map.at(mappos))
 				{
 					case Cell::WALL:
@@ -76,15 +60,6 @@ void Level::BuildMap()
 						break;
 				}
 
-
-
-
-
-
-
-
-
-
 				// only need to assess this on first pass
 				if (player_spawn == 0)
 				{
@@ -100,9 +75,8 @@ void Level::BuildMap()
 	}
 }
 
-void Level::DrawMapBig(Vector3 player_cell)
+void Level::DrawMapSmall()
 {
-	int current_player_cell = player_cell.GetY() * MAP_WIDTH + player_cell.GetX();
 	int x, y;
 	float x_offset, y_offset;
 
@@ -117,11 +91,7 @@ void Level::DrawMapBig(Vector3 player_cell)
 
 			if (mappos >= 0 && mappos < MAP_SIZE)
 			{
-				if (current_player_cell == mappos)
-				{
-					m_colour.Set(1, 0, 1);
-				}
-				else if (level_map.at(mappos) == 1)
+				if (level_map.at(mappos) == 1)
 				{
 					m_colour.Set(1, 1, 1);
 				}
@@ -131,19 +101,15 @@ void Level::DrawMapBig(Vector3 player_cell)
 					m_colour.Set(0.5, 0.1, 1);
 				}
 				else m_colour.Set(0.1, 0.1, 0.1);
-
-				// only need to assess this on first pass
-				if (player_spawn == 0)
-				{
-					if (level_map.at(mappos) == 3)
-					{
-						this->player_spawn = mappos;
-					}
-				}
 			}
 
 
-			ShapeRenderer::RenderSquare(x_offset + 1, y_offset, x_offset + MAP_CELL_SIZE * 2 - 1, y_offset + MAP_CELL_SIZE * 2 - 1, m_colour.r, m_colour.g, m_colour.b);
+			ShapeRenderer::RenderSquare(
+				(x_offset + 1) / 6, 
+				y_offset / 6, 
+				(x_offset + MAP_CELL_SIZE * 2 - 1) / 6, 
+				(y_offset + MAP_CELL_SIZE * 2 - 1) / 6,
+				m_colour.r, m_colour.g, m_colour.b);
 		}
 	}
 }

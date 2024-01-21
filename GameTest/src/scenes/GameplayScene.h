@@ -32,6 +32,7 @@ public:
 	}
 
 
+	Entity<Player> *player = new Entity<Player>();
 private:
 	template <class Collider>
 	void HandleCollisions();
@@ -39,7 +40,6 @@ private:
 
 	std::vector<BaseEntity*> m_entities;
 	bool hidemap = false;
-	Entity<Player> *player = new Entity<Player>();
 	Level* level = nullptr;
 	Raycaster* raycaster = nullptr;
 };

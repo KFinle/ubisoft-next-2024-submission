@@ -42,7 +42,7 @@ public:
 	Level* current_level = nullptr;
 
 	float refire_timer = 0;
-	float max_refire_timer = 0.1;
+	float max_refire_timer = 0.001;
 
 	// we'll use these to customize pivoting if needed
 	float last_x = 0;

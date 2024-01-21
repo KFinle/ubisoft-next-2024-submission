@@ -44,7 +44,7 @@ public:
 	int player_spawn = 0;
 	void BuildMap();
 
-	void DrawMapBig(Vector3 player_cell);
+	void DrawMapSmall();
 	void RenderMap();
 	render_colour m_colour;
 };

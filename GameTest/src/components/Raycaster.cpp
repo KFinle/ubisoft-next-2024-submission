@@ -11,8 +11,6 @@ void Raycaster::RenderRays()
     {
         // Draw the original ray
         App::DrawLine(r.start_x, r.start_y, r.end_x, r.end_y, 0.0f, 0.8f, 0.8f);
-
-
     }
 }
 
@@ -52,20 +50,30 @@ void Raycaster::Render3D()
             float startY = lineOff;
             float endY = lineOff + wall_height;
 
+            //Draw floor
+            App::DrawLine(startX, startY, endX, 0, 0, .3 * illumination, .3 * illumination);
+
+
 
             if (rays[i].goal)
             {
                 App::DrawLine(startX, startY, endX, endY, 1 * illumination, 1 * illumination, 0* illumination);
             }
+            else if (rays[i].hazard)
+            {
+                App::DrawLine(startX, startY, endX, endY, .8 * illumination, 0, 0.3 * illumination);
+            }
+            else if (rays[i].breakable)
+            {
+                App::DrawLine(startX, startY, endX, endY, .8 * illumination, 0, 0.8 * illumination);
+            }
             else
             {
-				// Draw the wall
-				App::DrawLine(startX, startY, endX, endY, 1 * illumination, 0.8f * illumination, 0.8f * illumination);
+				App::DrawLine(startX, startY, endX, endY, 0, 0.8f * illumination, 0.8f * illumination);
             }
             // Draw skybox(tall buildings?)
-            App::DrawLine(startX, endY, endX, WINDOW_HEIGHT, .5 * illumination, .5 * illumination, .5 * illumination);
+            App::DrawLine(startX, endY, endX, WINDOW_HEIGHT, 0, .3 * illumination, .3 * illumination);
 
-            //Draw floor
         }
     }
 }
@@ -109,6 +117,9 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
         int dof = 0;
         float distance = 0.0f;
         bool goal_found = false;
+        bool hazard_found = false;
+        bool breakable_found = false;
+
 
         while (dof < max_steps && distance < max_distance)
         {
@@ -120,14 +131,18 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
 
             if (mp >= 0 && mp < MAP_WIDTH * MAP_HEIGHT)
             {
-                if (level->level_map.at(mp) != 0)
+                if (level->level_map.at(mp) == Cell::WALL)
                 {
                     break;
                 }
-
-                else if (level->level_map.at(mp) == 2)
+                if (level->level_map.at(mp) == Cell::BREAKABLE)
                 {
-                    goal_found = true;
+                    breakable_found = true;
+                    break;
+                }
+                if (level->level_map.at(mp) == Cell::INSTANTDEATH)
+                {
+                    hazard_found = true;
                     break;
                 }
             }
@@ -143,13 +158,18 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
                 int diag_mp1 = my * MAP_WIDTH + prev_mx;
                 int diag_mp2 = prev_my * MAP_WIDTH + mx;
 
-                if (level->level_map.at(diag_mp1) == 1 || level->level_map.at(diag_mp2) == 1)
+                if (level->level_map.at(diag_mp1) == Cell::WALL || level->level_map.at(diag_mp2) == Cell::WALL)
                 {
                     break;
                 }
-                else if (level->level_map.at(diag_mp1) == 2 || level->level_map.at(diag_mp2) == 2)
+                if (level->level_map.at(diag_mp1) == Cell::GOAL || level->level_map.at(diag_mp2) == Cell::GOAL)
                 {
                     goal_found = true;
+                    break;
+                }
+                if (level->level_map.at(diag_mp1) == Cell::INSTANTDEATH || level->level_map.at(diag_mp2) == Cell::INSTANTDEATH)
+                {
+                    hazard_found = true;
                     break;
                 }
             }
@@ -172,6 +192,8 @@ std::vector<ray> Raycaster::CalculateRays(const Entity<Player>& player_entity, L
         ray.player_angle = player_angle;
         ray.distance = distance;
         ray.goal = goal_found;
+        ray.hazard = hazard_found;
+        ray.breakable = breakable_found;
         ray.correction_factor = MathUtility::ModDegrees(player_angle - ray_angle);
         ray.reflection_angle = reflection_angle;
         calculated_rays.push_back(ray);

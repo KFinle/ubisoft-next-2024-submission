@@ -12,7 +12,7 @@ void ShapeRenderer::RenderSquare(float sx, float sy, float ex, float ey, float r
 }
 
 
-void ShapeRenderer::RenderShapeWithNPolygons(float cx, float cy, float radius, float r, float g, float b, int numSegments, float rotation)
+void ShapeRenderer::RenderShapeWithNSides(float cx, float cy, float radius, float r, float g, float b, int numSegments, float rotation)
 {
     for (int i = 0; i < numSegments; ++i)
     {

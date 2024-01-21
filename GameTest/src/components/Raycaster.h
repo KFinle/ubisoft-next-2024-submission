@@ -19,6 +19,8 @@ struct ray
 	float player_angle;
 	float distance;
 	bool goal = false;
+	bool hazard = false;
+	bool breakable = false;
 	float correction_factor;
 	float reflection_angle;
 };

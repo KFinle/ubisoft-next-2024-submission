@@ -136,14 +136,14 @@ void Player::Render()
 		MathUtility::ScaleToVirtualHeight(transform.position.GetY()), 
 		1, 0, 0.89
 	);
-	ShapeRenderer::RenderShapeWithNPolygons
+	ShapeRenderer::RenderShapeWithNSides
 	(
 		MathUtility::ScaleToVirtualWidth(transform.position.GetX()), 
 		MathUtility::ScaleToVirtualHeight(transform.position.GetY()), 
 		30, 1, 0, 1, 3, 
 		MathUtility::DegreeToRadians(MathUtility::ModDegrees(transform.direction_angle + 5))
 	);
-	ShapeRenderer::RenderShapeWithNPolygons(MathUtility::ScaleToVirtualWidth
+	ShapeRenderer::RenderShapeWithNSides(MathUtility::ScaleToVirtualWidth
 	(
 		transform.position.GetX()), 
 		MathUtility::ScaleToVirtualHeight(transform.position.GetY()), 
@@ -154,7 +154,7 @@ void Player::Render()
 
 void Player::InitializePlayer()
 {
-	transform.position.Set(-0.8, 0, 0);
+	//transform.position.Set(-0.8, 0, 0);
 	physics.max_speed = 0.01;
 	physics.turn_speed = 50;
 	collider.InitializeCollider(transform.position, 100, 100);

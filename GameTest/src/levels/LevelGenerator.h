@@ -2,7 +2,13 @@
 #include "vector"
 enum Cell
 {
-	EMPTY, WALL, GOAL, PLAYER, ENEMYNEXUS, BREAKABLE, INSTANTDEATH
+	EMPTY, 
+	WALL, 
+	GOAL, 
+	PLAYER, 
+	ENEMYNEXUS, 
+	BREAKABLE, 
+	INSTANTDEATH, 
 };
 class LevelGenerator
 {
@@ -12,9 +18,9 @@ public:
 
 	int map[MAP_HEIGHT][MAP_WIDTH];
 
-	int floor_spawn_rate = 90;
-	int breakable_spawn_rate = 60;
-	int death_spawn_rate = 0;
+	int floor_spawn_rate = 50;
+	int breakable_spawn_rate = 90;
+	int death_spawn_rate = 97;
 
 	int number_of_generations = 5;
 	void GenerateMap();
@@ -22,14 +28,16 @@ public:
 
 	void FixMap();
 
-	void CreateRooms();
+	void SpawnWinSquare();
 
-	int max_rooms = 4;
-	int min_rooms = 1;
-	int max_room_width = 4;
-	int min_room_width = 2;
-	int max_room_height = 3;
-	int min_room_height = 4;
+
+	//void CreateRooms();
+	//int max_rooms = 1;
+	//int min_rooms = 1;
+	//int max_room_width = 4;
+	//int min_room_width = 2;
+	//int max_room_height = 3;
+	//int min_room_height = 4;
 
 
 

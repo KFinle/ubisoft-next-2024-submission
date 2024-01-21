@@ -24,9 +24,6 @@ void LevelGenerator::GenerateMap()
 			{
 				map[h][w] = Cell::INSTANTDEATH;
 			}
-
-
-
 		}
 	}
 
@@ -35,11 +32,10 @@ void LevelGenerator::GenerateMap()
 		FixMap();
 	}
 	// Create rooms
-	CreateRooms();
+	//CreateRooms();
 
-	// ensure there's a spawnpoint for the player
-	map[MAP_HEIGHT / 2][1] = Cell::PLAYER;
-
+	// Spawn victoy squares
+	SpawnWinSquare();
 
 	for (int h = 0; h < MAP_HEIGHT; h++)
 	{
@@ -88,41 +84,70 @@ void LevelGenerator::FixMap()
 			{
 				map[h][w] = Cell::EMPTY;
 			}
-
-			if (w == MAP_WIDTH - 1)
-			{
-				map[h][w] = Cell::ENEMYNEXUS;
-			}
-
-			if ( w == 0 || h == 0 || h == MAP_HEIGHT - 1)
+			if ( w == 0 || h == 0 || h == MAP_HEIGHT - 1 || w == MAP_WIDTH - 1)
 			{
 				map[h][w] = Cell::WALL;
 			}
-		}
-	}
-
-}
-
-void LevelGenerator::CreateRooms()
-{
-	int num_rooms = rand() % max_rooms + max_rooms;
-
-	for (int i = 0; i < num_rooms; ++i)
-	{
-		int room_width = rand() % max_room_width + min_room_width;
-		int room_height = rand() % max_room_height + min_room_height;
-
-		int room_x = rand() % (MAP_WIDTH - room_width - 1) + 1;
-		int room_y = rand() % (MAP_HEIGHT - room_height - 1) + 1;
-
-		for (int h = room_y; h < room_y + room_height; ++h)
-		{
-			for (int w = room_x; w < room_x + room_width; ++w)
+			if (w == 2 && h == MAP_HEIGHT / 2)
 			{
-				map[h][w] = Cell::EMPTY;
-
+				map[h][w] = Cell::PLAYER;
 			}
 		}
 	}
 }
+
+
+
+void LevelGenerator::SpawnWinSquare()
+{
+	int numVictorySquares = 1;
+
+	for (int i = 0; i < numVictorySquares; i++)
+	{
+		int win_square_x = rand() % (MAP_WIDTH - 2) + 1;
+		int win_square_y = rand() % (MAP_HEIGHT - 2) + 1;
+		
+		// ensure the goal isn't too close to the player
+		while (win_square_x < MAP_WIDTH / 2)
+		{
+			win_square_x = rand() % (MAP_WIDTH - 2) + 1;
+		}
+
+
+		if (map[win_square_y][win_square_x] != Cell::GOAL)
+		{
+			map[win_square_y][win_square_x] = Cell::GOAL;
+		}
+		else
+		{
+			i++;
+		}
+	}
+}
+
+
+
+
+//void LevelGenerator::CreateRooms()
+//{
+//	int num_rooms = rand() % max_rooms + max_rooms;
+//
+//	for (int i = 0; i < num_rooms; ++i)
+//	{
+//		int room_width = rand() % max_room_width + min_room_width;
+//		int room_height = rand() % max_room_height + min_room_height;
+//
+//		int room_x = rand() % (MAP_WIDTH - room_width - 1) + 1;
+//		int room_y = rand() % (MAP_HEIGHT - room_height - 1) + 1;
+//
+//		for (int h = room_y; h < room_y + room_height; ++h)
+//		{
+//			for (int w = room_x; w < room_x + room_width; ++w)
+//			{
+//				map[h][w] = Cell::EMPTY;
+//
+//			}
+//		}
+//	}
+//}
 

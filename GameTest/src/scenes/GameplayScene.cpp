@@ -23,6 +23,7 @@ void GameplayScene::OnLoad()
 	level->level_map = level->RandomizeLevel();
 	level->BuildMap();
 	player->GetComponent<Player>()->current_level = level;
+	player->GetComponent<Player>()->transform.SetPosition(level->GetPositionFromLevelCell(level->player_spawn));
 	raycaster = new Raycaster();
 
 
@@ -31,17 +32,18 @@ void GameplayScene::OnLoad()
 
 void GameplayScene::Render()
 {
-	//if (hidemap)
-	//{
-	//	raycaster->Render3D();
-	//}
-	//	
-	//if (!hidemap)
-	//{
+	if (hidemap)
+	{
+		raycaster->Render3D();
+		level->DrawMapSmall();
+	}
+		
+	if (!hidemap)
+	{
 		level->BuildMap();
 		raycaster->RenderRays();
 		player->GetComponent<Player>()->Render();
-	//}
+	}
 
 	//if (player->GetComponent<Player>()->collider.currently_colliding)
 	//{
@@ -67,15 +69,18 @@ void GameplayScene::Update(float delta_time)
 
 	hidemap = App::IsKeyPressed(VK_TAB) ? true : false;
 
+	raycaster->num_rays = hidemap ? WINDOW_WIDTH : 15;
+	raycaster->fov_degrees = hidemap ? 60 : 10;
+
+
 	for (auto* proj : player->GetComponent<Player>()->active_projectiles)
 	{
-		if (proj->mp > 0)
+		auto collision_lambda = [&](float x, float y)
 		{
-			if (level->level_map.at(proj->mp) != 0)
-			{
-				level->level_map.at(proj->mp) == 0;
-			}
-		}
+			return player->GetComponent<Player>()->collider.CheckWallCollision(x, y, *level);
+		};
+		proj->SetCollisionCallback(collision_lambda);
+		
 	}
 
 }

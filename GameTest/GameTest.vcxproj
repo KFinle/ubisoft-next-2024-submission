@@ -193,6 +193,7 @@
     <ClInclude Include="src\components\Physics.h" />
     <ClInclude Include="src\components\Player.h" />
     <ClInclude Include="src\components\Transform.h" />
+    <ClInclude Include="src\components\UI.h" />
     <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\pools\Pool.h" />
     <ClInclude Include="src\rendering\RenderColour.h" />
