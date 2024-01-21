@@ -31,7 +31,7 @@ public:
 	void SpawnWinSquare();
 
 
-	//void CreateRooms();
+	void CreateRooms();
 	//int max_rooms = 1;
 	//int min_rooms = 1;
 	//int max_room_width = 4;
@@ -43,12 +43,12 @@ public:
 
 
 	// From when I was trying to do something totally different 
-	//int max_rooms = 3;
-	//int min_rooms = 2;
-	//int max_room_width = 5;
-	//int min_room_width = 3;
-	//int max_room_height = 6;
-	//int min_room_height = 3;
+	int max_rooms = 3;
+	int min_rooms = 2;
+	int max_room_width = 5;
+	int min_room_width = 3;
+	int max_room_height = 6;
+	int min_room_height = 3;
 
 	std::vector<int> genned_level = {};
 };

@@ -34,46 +34,9 @@ public:
 
 	Entity<Player> *player = new Entity<Player>();
 private:
-	template <class Collider>
-	void HandleCollisions();
-
-
 	std::vector<BaseEntity*> m_entities;
-	bool hidemap = false;
 	Level* level = nullptr;
 	Raycaster* raycaster = nullptr;
+	bool hidemap = false;
 };
 
-//template<class Collider>
-//inline void GameplayScene::HandleCollisions()
-//{
-//    for (auto& entity_ptr : m_entities)
-//    {
-//        if (Entity<Collider*>* derived_entity = dynamic_cast<Entity<Collider*>*>(entity_ptr.get()))
-//        {
-//            Collider* current_collider = derived_entity->GetComponent<Collider>();
-//
-//            if (current_collider)
-//            {
-//                for (auto& other_entity_ptr : m_entities)
-//                {
-//                    if (entity_ptr != other_entity_ptr)
-//                    {
-//                        if (Entity<Collider*>* derived_other_entity = dynamic_cast<Entity<Collider*>*>(other_entity_ptr.get()))
-//                        {
-//                            Collider* other_collider = derived_other_entity->GetComponent<Collider>();
-//
-//                            if (other_collider)
-//                            {
-//                                if (current_collider->CheckCollision(*other_collider))
-//                                {
-//                                    // Collision detected, handle it here
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

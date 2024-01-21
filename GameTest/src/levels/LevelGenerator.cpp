@@ -32,7 +32,7 @@ void LevelGenerator::GenerateMap()
 		FixMap();
 	}
 	// Create rooms
-	//CreateRooms();
+	CreateRooms();
 
 	// Spawn victoy squares
 	SpawnWinSquare();
@@ -128,26 +128,27 @@ void LevelGenerator::SpawnWinSquare()
 
 
 
-//void LevelGenerator::CreateRooms()
-//{
-//	int num_rooms = rand() % max_rooms + max_rooms;
-//
-//	for (int i = 0; i < num_rooms; ++i)
-//	{
-//		int room_width = rand() % max_room_width + min_room_width;
-//		int room_height = rand() % max_room_height + min_room_height;
-//
-//		int room_x = rand() % (MAP_WIDTH - room_width - 1) + 1;
-//		int room_y = rand() % (MAP_HEIGHT - room_height - 1) + 1;
-//
-//		for (int h = room_y; h < room_y + room_height; ++h)
-//		{
-//			for (int w = room_x; w < room_x + room_width; ++w)
-//			{
-//				map[h][w] = Cell::EMPTY;
-//
-//			}
-//		}
-//	}
-//}
+void LevelGenerator::CreateRooms()
+{
+	int num_rooms = rand() % max_rooms + max_rooms;
+
+	for (int i = 0; i < num_rooms; ++i)
+	{
+		int room_width = rand() % max_room_width + min_room_width;
+		int room_height = rand() % max_room_height + min_room_height;
+
+		int room_x = rand() % (MAP_WIDTH - room_width - 1) + 1;
+		int room_y = rand() % (MAP_HEIGHT - room_height - 1) + 1;
+
+		for (int h = room_y; h < room_y + room_height; ++h)
+		{
+			for (int w = room_x; w < room_x + room_width; ++w)
+			{
+				
+				if (!map[h][w] == Cell::PLAYER) map[h][w] = Cell::EMPTY;
+
+			}
+		}
+	}
+}
 

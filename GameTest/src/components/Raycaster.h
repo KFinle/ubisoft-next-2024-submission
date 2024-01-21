@@ -41,7 +41,7 @@ public:
 	//int num_rays = WINDOW_WIDTH;
 	int num_rays = 15;
 
-	int max_distance = 500;			// Maximum allowed distance without collision
+	int max_distance = 1000;			// Maximum allowed distance without collision
 	int max_steps = 1000;			// Maximum number of steps
 };
 

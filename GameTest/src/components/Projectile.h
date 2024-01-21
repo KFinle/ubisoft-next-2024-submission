@@ -32,14 +32,14 @@ struct Projectile : public Component<Projectile>
 			// check horizontal collision first
 			if (collision_callback && collision_callback(MathUtility::ScaleToVirtualWidth(new_x), curr_y))
 			{
-				col = Vector3(1, 0, 1);
+				//col = Vector3(1, 0, 1);
 				delta_x = -delta_x;
 			}
 
 			// check vertical collision
 			if (collision_callback && collision_callback(curr_x, MathUtility::ScaleToVirtualHeight(new_y)))
 			{
-				col = Vector3(1, .5, 0.7);
+				//col = Vector3(1, .5, 0.7);
 				delta_y = -delta_y;
 			}
 
@@ -56,9 +56,9 @@ struct Projectile : public Component<Projectile>
 		(
 			MathUtility::ScaleToVirtualWidth(transform.position.GetX()),
 			MathUtility::ScaleToVirtualHeight(transform.position.GetY()),
-			size,
+			6,
 			//0.635, 1, 0.024,
-			col.GetX(), col.GetY(), col.GetZ(),
+			col.GetX()*lifetime, col.GetY()*lifetime, col.GetZ(),
 			36
 		);
 	}
@@ -83,7 +83,9 @@ struct Projectile : public Component<Projectile>
 		collision_callback = std::move(callback);
 	}
 
-	Vector3 col = Vector3(0.635, 1, 0.024);
+	//Vector3 col = Vector3(0.635, 1, 0.024);
+	Vector3 col = Vector3(1, 1, 1);
+
 	Transform transform;
 	Physics physics;
 	bool launched = false;

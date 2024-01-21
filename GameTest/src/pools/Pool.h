@@ -2,7 +2,7 @@
 #include <vector>
 
 #include <memory>
-#include "../components/Projectile.h"
+//#include "../components/Projectile.h"
 
 template<class T>
 class Pool
@@ -59,4 +59,4 @@ template<class T>
 Pool<T>* Pool<T>::instance = nullptr;
 
 // declare projectile pool
-Pool<Projectile>* Pool<Projectile>::instance = nullptr;
+//Pool<Projectile>* Pool<Projectile>::instance = nullptr;
