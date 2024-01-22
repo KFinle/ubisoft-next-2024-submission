@@ -22,7 +22,6 @@ GameplayScene::~GameplayScene()
 // Initialize gameplay scene 
 void GameplayScene::OnLoad()
 {
-	levels_cleared = 0;
 	level = new Level();
 	level->level_map = level->RandomizeLevel();
 	level->BuildMap();
@@ -68,6 +67,7 @@ void GameplayScene::Update(float delta_time)
 	// Used for testing level generation
 	if (App::IsKeyPressed(VK_RETURN))
 	{
+		levels_cleared = 0;
 		this->Load();
 	}
 

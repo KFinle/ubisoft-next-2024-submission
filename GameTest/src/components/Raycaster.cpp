@@ -43,7 +43,7 @@ void Raycaster::Render3D()
             }
 
             // Calculate illumination based on distance
-            float illumination = 0.5f - (rays[i].distance / max_distance);
+            float illumination = 1.0f - (rays[i].distance / max_distance);
 
             // Calculate line height and position
             float vertical_line_offset = (WINDOW_HEIGHT - wall_height) / 2;

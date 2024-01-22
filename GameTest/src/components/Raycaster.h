@@ -34,7 +34,7 @@ public:
 
 	// data members
 	std::vector<ray> rays;
-	float fov_degrees = 60.0f;
+	float fov_degrees = 15.0f;
 	int num_rays = 15;
 	float cell_render_size = static_cast<float>(WINDOW_WIDTH) / 100; // for rendering in 3D
 	int max_distance = 1000;			// Maximum allowed distance without ray collision
