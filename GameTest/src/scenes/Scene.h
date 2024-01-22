@@ -4,6 +4,8 @@ enum scene_type
 {
 	menu, gameplay, gameover
 };
+
+// Base scene for all Scenes in the game 
 class Scene
 {
 public:

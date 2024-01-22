@@ -4,6 +4,12 @@
 // When I started preparing for this project, I was unsure if the game would be in 3D or 2D //
 // so working with a Vector3 class instead of Vector2 made the most sense for me.			//
 //////////////////////////////////////////////////////////////////////////////////////////////
+// This class includes several functions that did not end up getting used. However, I felt  //
+// it was still worth including in my submission, rather than trying to find everything		//
+// that did not get used. In any case, I'll be happy to have this library created for my	//
+// C++ project																				//
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 
 class Vector3
 {

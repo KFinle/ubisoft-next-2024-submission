@@ -6,6 +6,10 @@
 // WARNING: Changing these settings could have disastrous effects across the game! //
 // Be careful :)																   //
 /////////////////////////////////////////////////////////////////////////////////////
+// Many aspects of the game rely on knowing the exact window size as well as the   //
+// properties of the map.														   //
+/////////////////////////////////////////////////////////////////////////////////////
+
 
 struct GlobalSettings
 {

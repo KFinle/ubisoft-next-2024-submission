@@ -3,11 +3,12 @@
 #include "LevelGenerator.h"
 #include "../scenes/GameplayScene.h"
 
+// Main function call for level generation
 void LevelGenerator::GenerateMap()
 {
 	map.resize(MAP_HEIGHT, std::vector<int>(MAP_WIDTH, Cell::EMPTY));
+	
 	int seed = time(NULL);
-
 	srand(seed);
 	for (int h = 0; h < MAP_HEIGHT; h++)
 	{
@@ -29,6 +30,7 @@ void LevelGenerator::GenerateMap()
 		}
 	}
 
+	// cycle through the level up to a maximum number of iterations to attempt to fix layout issues 
 	for (int generation = 0; generation < number_of_generations; generation++)
 	{
 		FixMap();
@@ -48,6 +50,7 @@ void LevelGenerator::GenerateMap()
 	}
 }
 
+// Returns the number of walls nearby
 int LevelGenerator::NumberOfNearWalls(int x, int y)
 {
 	int count = 0;
@@ -67,7 +70,8 @@ int LevelGenerator::NumberOfNearWalls(int x, int y)
 	return count;
 }
 
-
+// Checks if there are too many walls or empty cells and fixes it
+// NOTE: I ran out of time to also account for Cell::BREAKABLE and Cell::INSTANTDEATH
 void LevelGenerator::FixMap()
 {
 	for (int h = 0; h < MAP_HEIGHT; h++)
@@ -109,7 +113,7 @@ void LevelGenerator::FixMap()
 }
 
 
-
+// Spawns a Cell::GOAL on the map
 void LevelGenerator::SpawnWinSquare()
 {
 	int numVictorySquares = 1;
@@ -125,7 +129,6 @@ void LevelGenerator::SpawnWinSquare()
 			win_square_x = rand() % (MAP_WIDTH - 2) + 1;
 		}
 
-
 		if (map[win_square_y][win_square_x] != Cell::GOAL)
 		{
 			map[win_square_y][win_square_x] = Cell::GOAL;
@@ -139,7 +142,7 @@ void LevelGenerator::SpawnWinSquare()
 
 
 
-
+// Used to create larger sections of empty space on the map
 void LevelGenerator::CreateRooms()
 {
 	int num_rooms = rand() % max_rooms + max_rooms;
@@ -157,7 +160,7 @@ void LevelGenerator::CreateRooms()
 			for (int w = room_x; w < room_x + room_width; ++w)
 			{
 				
-				if (!map[h][w] == Cell::PLAYER) map[h][w] = Cell::EMPTY;
+				if (map[h][w] != Cell::PLAYER) map[h][w] = Cell::EMPTY;
 
 			}
 		}

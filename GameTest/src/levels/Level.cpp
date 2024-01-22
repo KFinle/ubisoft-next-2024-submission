@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "LevelGenerator.h"
 
+// Generate a random map layout
 std::vector<int> Level::RandomizeLevel()
 {
 	std::vector<int> random_map;
@@ -11,6 +12,7 @@ std::vector<int> Level::RandomizeLevel()
 	return random_map;
 }
 
+// Returns the native screen coordinate position of the given cell
 Vector3 Level::GetPositionFromLevelCell(int index)
 {
 	int x = index % MAP_WIDTH;
@@ -23,6 +25,7 @@ Vector3 Level::GetPositionFromLevelCell(int index)
 	return Vector3(MathUtility::ScaleToNativeWidth(x_position), MathUtility::ScaleToNativeHeight(y_position));
 }
 
+// Renders the map 
 void Level::BuildMap()
 {
 	int x, y;
@@ -69,12 +72,12 @@ void Level::BuildMap()
 					}
 				}
 			}
-
 			ShapeRenderer::RenderSquare(x_offset + 1, y_offset, x_offset + MAP_CELL_SIZE - 1, y_offset + MAP_CELL_SIZE - 1, m_colour.r, m_colour.g, m_colour.b);
 		}
 	}
 }
 
+// Renders a minimap
 void Level::DrawMapSmall()
 {
 	int x, y;
@@ -91,25 +94,36 @@ void Level::DrawMapSmall()
 
 			if (mappos >= 0 && mappos < MAP_SIZE)
 			{
-				if (level_map.at(mappos) == 1)
+				switch (level_map.at(mappos))
 				{
+				case Cell::WALL:
 					m_colour.Set(1, 1, 1);
-				}
-				else if (level_map.at(mappos) == 2)
-				{
-					win_square = (y * MAP_WIDTH + x);
+					break;
+				case Cell::GOAL:
 					m_colour.Set(0.5, 0.1, 1);
+					break;
+				case Cell::BORDER:
+					m_colour.Set(.3, .3, .3);
+					break;
+				case Cell::BREAKABLE:
+					m_colour.Set(.8, 1, .1);
+					break;
+				case Cell::INSTANTDEATH:
+					m_colour.Set(1, 0, 0);
+					break;
+				default:
+					m_colour.Set(0, 0, 0);
+					break;
 				}
-				else m_colour.Set(0.1, 0.1, 0.1);
 			}
-
-
-			ShapeRenderer::RenderSquare(
+			ShapeRenderer::RenderSquare
+			(
 				(x_offset + 1) / 6, 
 				y_offset / 6, 
 				(x_offset + MAP_CELL_SIZE * 2 - 1) / 6, 
 				(y_offset + MAP_CELL_SIZE * 2 - 1) / 6,
-				m_colour.r, m_colour.g, m_colour.b);
+				m_colour.r, m_colour.g, m_colour.b
+			);
 		}
 	}
 }

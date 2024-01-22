@@ -7,7 +7,7 @@
 #include "../levels/Level.h"
 #include "../components/Raycaster.h"
 
-
+// Scene used for main gameplay loop
 class GameplayScene : public Scene
 {
 public:
@@ -22,17 +22,17 @@ public:
 	void CheckLevelState(float delta_time);
 	void TransitionToGameOver(float delta_time);
 
-	// templated entity creation within scene
+	// templated Entity creation within scene
 	template <typename... Components>
 	Entity<Components...>& AddEntity() {
 		entities.push_back(std::make_unique<Entity<Components...>>());
 		return *static_cast<Entity<Components...>*>(entities.back().get());
 	}
 
+	// start with Player Entity
 	Entity<Player> *player = new Entity<Player>();
-
-
 	int levels_cleared = 0;
+
 private:
 	std::vector<BaseEntity*> m_entities;
 	Level* level = nullptr;

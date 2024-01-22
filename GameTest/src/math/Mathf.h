@@ -7,10 +7,12 @@
 // I know I could just make use of the <cmath> library, but I'd prefer to know I'm working  //
 // with floats every time.																	//
 //////////////////////////////////////////////////////////////////////////////////////////////
+// I am also aware there is some redundacy on the some functions here, most notably in the  //
+// trigonomic functions. This file was created in the ~dark times~ when I was unaware of    //
+// sinf, cosf, etc... whoops.																//
+//////////////////////////////////////////////////////////////////////////////////////////////
 
-/// <summary>
-/// float-casted versions of various cmath functions. 
-/// </summary>
+
 class Mathf
 {
 public:

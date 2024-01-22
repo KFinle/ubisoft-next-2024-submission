@@ -39,33 +39,36 @@ float MathUtility::ModDegrees(float angle)
 	return angle;
 }
 
+// converts a number to its equivalent on a -1 to 1 scale
 float MathUtility::ScaleToNativeHeight(float num)
 {
 	return ((num / WINDOW_HEIGHT * 2.0f) - 1);
 }
-
+// converts a number to its equivalent on a -1 to 1 scale
 float MathUtility::ScaleToNativeWidth(float num)
 {
 	return ((num / WINDOW_WIDTH * 2.0f) - 1);
 }
-
+// converts a single native coordinate scale to its equivalent Virtual size
 float MathUtility::ScaleToVirtualHeight(float num)
 {
 	return ((num + 1.0f) * WINDOW_HEIGHT) / 2.0f;
 }
-
+// converts a single native coordinate scale to its equivalent Virtual size
 float MathUtility::ScaleToVirtualWidth(float num)
 {
 	return ((num + 1.0f) * WINDOW_WIDTH) / 2.0f;
 
 }
 
+// Returns the cell coordinate of a position
 Vector3 MathUtility::GetCell(Vector3 position)
 {
 	Vector3 pos = Vector3((int)position.GetX() / MAP_CELL_SIZE, (int)position.GetY() / MAP_CELL_SIZE, 0);
 	return pos;
 }
 
+// RNG
 float MathUtility::RandomFloat(float min, float max)
 {
 	std::random_device device;

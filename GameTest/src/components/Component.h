@@ -4,6 +4,7 @@
 
 using ComponentTypeID = IDType;
 
+// Can be used to create systems affecting components with shared attributes
 enum ComponentAttribute {
     NoAttributeComponent = 0,
     UpdatableComponent = 1 << 0,
@@ -12,6 +13,8 @@ enum ComponentAttribute {
     // Add more attributes as needed
 };
 
+// Abstract Component class
+// To be overridden by all Components
 class BaseComponent {
 public:
 
@@ -23,13 +26,17 @@ public:
         return (GetAttributes() & static_cast<int>(attribute)) != 0;
     }
     virtual void Update(float delta_time) = 0;
-
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+// Templated Component class
+// Allows the developer to create a component out of any class or struct
+// Each component is assigned a unique ID upon creation.
+// Any attributes passed to a component are stored and can be accessed 
+// by any system requiring them. 
 template <typename T>
 class Component : public BaseComponent {
 public:

@@ -5,17 +5,28 @@
 // simple box collision for now 
 bool Collider::CheckCollision(const Collider& other) const 
 {
-    return (
-        (position.GetX() + width / 2) > (other.position.GetX() - other.width / 2) &&
-        (position.GetX() - width / 2) < (other.position.GetX() + other.width / 2) &&
-        (position.GetY() + height / 2) > (other.position.GetY() - other.height / 2) &&
-        (position.GetY() - height / 2) < (other.position.GetY() + other.height / 2)
+    return 
+        (
+            (position.GetX() + width / 2) > (other.position.GetX() - other.width / 2) &&
+            (position.GetX() - width / 2) < (other.position.GetX() + other.width / 2) &&
+            (position.GetY() + height / 2) > (other.position.GetY() - other.height / 2) &&
+            (position.GetY() - height / 2) < (other.position.GetY() + other.height / 2)
         );
 }
 
+// Called every frame 
+void Collider::Update(float delta_time)
+{
+    // look for other colliders
+    // probably using the callback setup used on the Projectile class
+}
+
+// Checks if a collision with the level has occured
+// @param direction_x | scaled to Virtual Window size
+// @param direction_y | scaled to Virtual Window size
+// @returns Cell type
 Cell Collider::CheckWallCollision(int direction_x, int direction_y, Level& level)
 {
-    
     //position should be scaled to window size (ie: virtual coords)
     int mappos = (direction_y / MAP_CELL_SIZE) * MAP_WIDTH  + (direction_x / MAP_CELL_SIZE);
 
@@ -30,12 +41,14 @@ Cell Collider::CheckWallCollision(int direction_x, int direction_y, Level& level
     return EMPTY;
 }
 
-Vector3 Collider::GetPosition()
+// Gets the center position of the collider
+Vector3 Collider::GetPosition() const
 {
-    return Vector3();
+    return position;
 }
 
-void Collider::DrawColliderLines()
+// Visualize the collider
+void Collider::DrawColliderLines() const
 {
     const float half_width = width / 2;
     const float half_height = height / 2;

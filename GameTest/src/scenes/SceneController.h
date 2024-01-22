@@ -4,6 +4,8 @@
 #include <vector>
 #include "../App/app.h"
 #include "Scene.h"
+
+// Manages the state of scenes in the game
 class SceneController
 {
 public:

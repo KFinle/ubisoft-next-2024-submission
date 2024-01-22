@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+
+// Initial screen
 class MenuScene : public Scene
 {
 public:

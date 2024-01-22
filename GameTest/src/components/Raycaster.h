@@ -5,8 +5,8 @@
 #include "../src/math/Vector3.h"
 #include "../App/main.h"
 
-
-
+// Stored data of rays calculated by the Raycaster.
+// Used for rendering
 struct ray
 {
 	float start_x;
@@ -22,23 +22,22 @@ struct ray
 	float correction_factor;
 };
 
-
+// Used to cast rays from any point
+// Note: This should be refactored to a Component if I have time 
 class Raycaster
 {
 public:
-	float cell_render_size = static_cast<float>(WINDOW_WIDTH) / 100;
 
 	void RenderRays();
 	std::vector<ray> CalculateRays(const Entity<Player>& playerEntity, Level* level);
 	void Render3D();
 
-
+	// data members
 	std::vector<ray> rays;
 	float fov_degrees = 60.0f;
-	//int num_rays = WINDOW_WIDTH;
 	int num_rays = 15;
-
-	int max_distance = 1000;			// Maximum allowed distance without collision
+	float cell_render_size = static_cast<float>(WINDOW_WIDTH) / 100; // for rendering in 3D
+	int max_distance = 1000;			// Maximum allowed distance without ray collision
 	int max_steps = 1000;				// Maximum number of steps
 };
 

@@ -1,5 +1,7 @@
 #pragma once
 #include "RenderColour.h"
+
+// This is just a wrapper for some repeated App::DrawLine() calls I was making 
 class ShapeRenderer
 {
 public:

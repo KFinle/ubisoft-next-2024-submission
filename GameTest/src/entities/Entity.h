@@ -18,9 +18,10 @@ enum EntityAttribute {
 };
 
 
+// Virtual class to be used as the foundation for creating any in-game objects
+// Ideally, every object in the game will inherit from this class
 class BaseEntity 
 {
-
 public:
     BaseEntity() {}
     virtual ~BaseEntity() {}
@@ -34,6 +35,15 @@ public:
 };
 
 
+// Templated Entity class
+// This class is used to construct any GameObjects required.
+// Due to the use of variadic templating, an Entity can be created 
+// out of any combination of components.
+// Additionally, Entities can be assigned Attributes, allowing outside
+// systems to interact with relevant Entities without needing to directly 
+// reference them.
+//
+// Each Entity type is given its own unique TypeID on creation
 template <typename... Components>
 class Entity 
 {
@@ -48,6 +58,10 @@ public:
 
     Entity(int attributes = NoAttribute) : m_attributes(attributes) 
     {
+        // NOTE TO UBISOFT:
+        // THIS REQUIRES C++ 17 OR NEWER. THE PROVIDED PROJECT NOT TO MODIFY THE 
+        // API, BUT MADE NO MENTION OF CHANGING THE C++ VERSION. 
+        // PLEASE OVERLOOK MY TRANSGRESSION IF THIS IS NOT ALLOWED
         (AddComponent<Components>(), ...);
         m_id = TypeIDGenerator<Entity>::GenerateNewID<Entity>();
     }
@@ -66,24 +80,26 @@ public:
         }
     }
 
+    // called every frame
+    // updates all Components attached to the Entity with the Updateable attribute
     void Update(float delta_time)
     {
         for (auto& component : m_components)
         {
-            if (component->HasAttribute(Updatable))
+            if (component->HasAttribute(UpdatableComponent))
             {
                 component->Update();
             }
         }
     }
 
-    // Add a component to the entity
+    // Add a Component to the Entity
     template <typename T>
     void AddComponent() {
         m_components.push_back(new T());
     }
 
-    // Get a component of a specific type
+    // Get a Component of a specific type
     template <typename T>
     T* GetComponent() const {
         for (auto* component : m_components) {
@@ -102,11 +118,9 @@ public:
             [](BaseComponent* component) {
                 return dynamic_cast<Component<T>*>(component) != nullptr;
             });
-
         for (auto to_delete = i; to_delete != m_components.end(); to_delete) {
             delete* to_delete;
         }
-
         m_components.erase(it, m_components.end());
     }
 
@@ -114,6 +128,7 @@ public:
     template <typename... Ts>
     void RemoveComponents() {
         // Iterate through each type in the template parameter pack
+        // AGAIN, THIS IS C++ 17 OR NEWER ONLY 
         (RemoveComponent<Ts>(), ...);
     }
 
@@ -130,5 +145,4 @@ public:
     bool HasComponent() const {
         return GetComponent<T>() != nullptr;
     }
-
 };

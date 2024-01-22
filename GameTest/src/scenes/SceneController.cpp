@@ -39,7 +39,7 @@ void SceneController::Update(float deltaTime)
 	m_delta_time = deltaTime / 1000;
 	m_previous_time = m_current_time;
 
-
+	// update whatever scene is active 
 	if (current_scene != nullptr)
 	{
 		current_scene->Update(m_delta_time);
@@ -87,9 +87,10 @@ void SceneController::Destroy()
 	OnDestroy();
 }
 
-
+// Load new scenes
 void SceneController::LoadScene(scene_type type)
 {
+	// delete current scene
 	if (current_scene != nullptr)
 	{
 		delete current_scene;

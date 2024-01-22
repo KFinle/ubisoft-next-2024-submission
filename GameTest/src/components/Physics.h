@@ -1,6 +1,12 @@
 #pragma once
 #include "../math/Vector3.h"
 #include "Component.h"
+
+
+// Physics Component
+// Can be added to any Entity or Component requiring physics-based locomoton
+//
+// Note: incomplete Component at the moment. 
 struct Physics : public Component<Physics>
 {
 	void Update(float delta_time) {}

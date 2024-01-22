@@ -3,6 +3,8 @@
 
 using IDType = std::uint64_t;
 
+// Used to generate unique IDs for any type passed to it. 
+// This Singleton class will be instantiated for any type passed.
 template <class T>
 class TypeIDGenerator
 {

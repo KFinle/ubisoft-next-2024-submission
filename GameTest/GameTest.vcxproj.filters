@@ -34,7 +34,6 @@
     <ClCompile Include="src\components\Player.cpp" />
     <ClCompile Include="src\components\Raycaster.cpp" />
     <ClCompile Include="src\components\Collider.cpp" />
-    <ClCompile Include="src\components\Physics.cpp" />
     <ClCompile Include="src\scenes\GameOverScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -86,8 +85,6 @@
     <ClInclude Include="src\components\Bullet.h" />
     <ClInclude Include="src\pools\Pool.h" />
     <ClInclude Include="src\components\Particle.h" />
-    <ClInclude Include="src\components\UI.h" />
-    <ClInclude Include="src\components\Tile.h" />
     <ClInclude Include="src\scenes\GameOverScene.h" />
     <ClInclude Include="src\components\Bomb.h" />
   </ItemGroup>

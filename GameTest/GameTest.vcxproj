@@ -194,9 +194,7 @@
     <ClInclude Include="src\components\Physics.h" />
     <ClInclude Include="src\components\Player.h" />
     <ClInclude Include="src\components\Transform.h" />
-    <ClInclude Include="src\components\UI.h" />
     <ClInclude Include="src\entities\Entity.h" />
-    <ClInclude Include="src\components\Tile.h" />
     <ClInclude Include="src\pools\Pool.h" />
     <ClInclude Include="src\rendering\RenderColour.h" />
     <ClInclude Include="src\rendering\ShapeRenderer.h" />
@@ -224,7 +222,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="src\scenes\GameOverScene.cpp" />
     <ClCompile Include="src\components\Collider.cpp" />
-    <ClCompile Include="src\components\Physics.cpp" />
     <ClCompile Include="src\components\Raycaster.cpp" />
     <ClCompile Include="src\components\Player.cpp" />
     <ClCompile Include="src\rendering\ShapeRenderer.cpp" />
